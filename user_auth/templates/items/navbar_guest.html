@@ -31,11 +31,10 @@
                 <a class="nav-link" href="#" style="color: black;">Contact</a>
               </li>
               <li class="nav-item" style="padding-right: 59px;;">
-                <button class="btn btn-warning" style="width: 140px; height: 48px; color: #0D5CAB;" type="submit">
                 {% if request.path == '/login/' %}
-                  Register
+                  <a href="/register/" class="btn btn-warning" style="font-size: 18px ;width: 140px; height: 48px; color: #0D5CAB;" role="button">Register</a>
                 {% elif request.path == '/register/' %}
-                  Login
+                  <a href="/login/" class="btn btn-warning" style="font-size: 18px ;width: 140px; height: 48px; color: #0D5CAB;" role="button">Login</a>
                 {% endif %}
                 </button>
               </li>
