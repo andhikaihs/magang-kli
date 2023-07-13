@@ -22,7 +22,7 @@
           <div class="d-flex">
             <ul class="navbar-nav me-auto">
               <li class="nav-item mx-auto">
-                <a class="nav-link" href="#" style="color: black;">Home</a>
+                <a class="nav-link" href="{% url 'dashboard' %}" style="color: black;">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" style="color: black;">About</a>
@@ -30,14 +30,13 @@
               <li class="nav-item">
                 <a class="nav-link" href="#" style="color: black;">Contact</a>
               </li>
-              <li class="nav-item" style="padding-right: 59px;;">
-                <button class="btn btn-warning" style="hover: #0D5CAB; width: 140px; height: 48px; color: #0D5CAB;" type="submit">
+              <li class="nav-item" style="padding-right: 59px;">
+                
                 {% if request.path == '/login/' %}
-                  Register
+                  <a class="btn-option" href="{% url 'register' %}" type="submit">Register</a>
                 {% elif request.path == '/register/' %}
-                  Login
+                  <a class="btn-option" href="{% url 'login' %}" type="submit">Login</a>
                 {% endif %}
-                </button>
               </li>
             </ul>
           </div>

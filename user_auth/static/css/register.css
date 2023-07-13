@@ -27,9 +27,14 @@
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
-  --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+  --bs-font-sans-serif: "Open Sans";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --color-btn-fuel-yellow: #EFB829;
+  --color-btn-tory-blue: #0D5CAB;
+  --color-btn-gray-mountain-meadow: #888888;
+  --color-btn-gray-light: #CCCCCC;
 }
 
 *,
@@ -42,6 +47,35 @@
   :root {
     scroll-behavior: smooth;
   }
+}
+
+.btn-option{
+  background-color: var(--color-btn-fuel-yellow);
+  color: var(--color-btn-tory-blue);
+  width: 140px; 
+  height: 48px;
+  font-weight: 400;
+  font-family: var(--bs-font-sans-serif);
+  border-radius: 5px;
+  border-style: none;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-option:hover {
+  background: var(--color-btn-tory-blue);
+  font-weight: 500;
+  color: var(--color-btn-fuel-yellow);
+  cursor: pointer;
+  border-style: none;
+}
+
+.btn-option:focus {
+  background: var(--color-btn-tory-blue);
+  color: var(--bs-white);
+  border-style: none;
 }
 
 body {
