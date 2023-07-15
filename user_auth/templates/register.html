@@ -14,6 +14,7 @@
     <script src="../static/js/bootstrap.js"></script>
 
     <title>Register</title>
+    <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
   </head>
   <body>
     <!-- Navbar -->
@@ -40,16 +41,16 @@
                       <form method="POST">
                         {% csrf_token %}
                         <div class="mb-3">
-                          <label for="name" class="form-label" style="font-size: 16px; font-weight: 400;">Full Name</label>
-                          <input type="name" class="form-control justify-content-center" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="name" name="name" placeholder="Bambang Multani">
+                          <label for="full_name" class="form-label">Full Name</label>
+                          <input type="full_name" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="full_name" name="full_name" placeholder="Bambang Multani" required>
                         </div>
                         <div class="mb-3">
-                          <label for="nip" class="form-label" style="font-size: 16px; font-weight: 400;">NIP</label>
-                          <input type="nip" class="form-control justify-content-center" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="nip" name="nip" placeholder="12345678">
+                          <label for="nip" class="form-label">NIP</label>
+                          <input type="nip" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="nip" name="nip" placeholder="12345678" required>
                         </div>
                         <div class="form-group mb-3">
-                          <label for="role" class="form-label" style="font-size: 16px; font-weight: 400;">Role</label>
-                          <select class="form-control justify-content-center" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="role" name="role" placeholder="12345678">
+                          <label for="role" class="form-label">Role</label>
+                          <select class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="role" name="role" required>
                             {% for choice in role_choices %}
                             <option value="" selected disabled hidden>Choose Role</option>
                             <option value="{{ choice.0 }}">{{ choice.1 }}</option>
@@ -59,15 +60,15 @@
                           </select>
                         </div>
                         <div class="mb-3">
-                          <label for="email" class="form-label" style="font-size: 16px; font-weight: 400;">Email</label>
-                          <input type="email" class="form-control justify-content-center" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="email" name="email" placeholder="example@email.com">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="email" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="email" name="email" placeholder="example@email.com" required>
                         </div>
                         <div class="mb-3">
-                          <label for="pass" class="form-label" style="font-size: 16px; font-weight: 400;">Password</label>
-                          <input type="password" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="pass" name="password" placeholder="at least 8 characters">
+                          <label for="password" class="form-label">Password</label>
+                          <input type="password" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="password" name="password" placeholder="at least 8 characters" required>
                         </div>
                         <div class="d-flex justify-content-center">
-                          <button class="btn-option" style="width: 140px; height: 48px; background: #EFB829; color: #0D5CAB; border-style: none;" type="submit" name="login">Register</button>
+                          <button class="btn-option" style="width: 140px; height: 48px; background: #EFB829; color: #0D5CAB; border-style: none;" type="submit" name="register">Register</button>
                         </div>                                      
                       </form>
                     </div>
