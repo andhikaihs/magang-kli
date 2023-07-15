@@ -41,18 +41,23 @@ def login(request):
 
         # Store user information in session
         request.session['user_id'] = user.id
-        request.session['user_full_name'] = user.full_name
+        request.session['full_name'] = user.full_name
+        request.session['nip'] = user.nip
+        request.session['role'] = user.role
+        request.session['email'] = user.email
+        request.session['password'] = user.password
         return redirect('dashboard')
 
     return render(request, 'login.html')
 
 def dashboard(request):
     user_id = request.session.get('user_id')
-    user_full_name = request.session.get('user_full_name')
+    full_name = request.session.get('full_name')
+    role = request.session.get('role')
 
-    if user_id and user_full_name:
+    if user_id and full_name:
         # if user is logged in
-        return render(request, 'dashboard.html', {'user_full_name': user_full_name})
+        return render(request, 'dashboard.html', {'full_name': full_name, 'role': role})
     else:
         # if user is not logged in, redirect to the login page
         return redirect('login')
@@ -61,3 +66,15 @@ def logout(request):
     # Clear the session data
     request.session.clear()
     return redirect('login')
+
+def home(request):
+    return render(request, 'home.html')
+
+def profile(request):
+    full_name = request.session.get('full_name')
+    nip = request.session.get('nip')
+    role = request.session.get('role')
+    email = request.session.get('email')
+    password = request.session.get('password')
+
+    return render(request, 'profile.html', {'full_name': full_name, 'nip': nip, 'role': role, 'email': email, 'password': password})
