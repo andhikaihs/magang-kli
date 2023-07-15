@@ -1,6 +1,6 @@
 <!-- Navbar -->
 <section>
-  <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #fff; height: 77px;">
+  <nav class="navbar navbar-expand-md navbar-light shadow-sm">
     <div class="container-fluid" style="padding-left: 49px;">
       <div class="row justify-content-center align-items-center">
         <div class="col col-2">
@@ -22,19 +22,20 @@
           <div class="d-flex">
             <ul class="navbar-nav me-auto">
               <li class="nav-item mx-auto">
-                <a class="nav-link" href="{% url 'dashboard' %}" style="color: black;">Home</a>
+                <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" style="color: black;">About</a>
+                <a class="nav-link" href="#">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" style="color: black;">Contact</a>
+                <a class="nav-link" href="#">Contact</a>
               </li>
               <li class="nav-item" style="padding-right: 59px;">
                 {% if request.path == '/login/' %}
                   <a class="btn-option" href="{% url 'register' %}" type="submit">Register</a>
                 {% elif request.path == '/register/' %}
                   <a class="btn-option" href="{% url 'login' %}" type="submit">Login</a>
+                {% endif %}
               </li>
             </ul>
           </div>
