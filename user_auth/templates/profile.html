@@ -1,0 +1,79 @@
+{% if error %}
+  <p>{{ error }}</p>
+{% endif %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <script src="../static/js/bootstrap.js"></script>
+
+    <title>Profile</title>
+    <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
+  </head>
+
+  <body>
+  <!-- Navbar -->
+  {% block navbar %}
+    {% include './items/navbar.html' %}
+  {% endblock %}
+  
+
+  <!-- MAIN -->
+  <div class="container-fluid" style="height: 900px;">
+    <div class="d-flex justify-content-center" style="padding-top: 59px; padding-bottom: 4px;">
+      <img src="../static/img/profile_picture.png" alt="" style="width: 120px; height: 120px; border-radius: 50%;">
+    </div>
+    <div class="d-flex justify-content-center" style="padding-bottom: 29px;">
+      <a href="#" style="font-size: 15px; color: black; text-decoration: unset; ">change photo</a>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="full_name" class="form-label">Full Name</label>
+          <input type="full_name" class="form-control" style="gap: 8px; width: 796px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="full_name" name="full_name" value="{{ full_name }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="nip" class="form-label">NIP</label>
+          <input type="nip" class="form-control" style="gap: 8px; width: 796px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="nip" name="nip" value="{{ nip }}" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="role" class="form-control" style="gap: 8px; width: 796px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="role" name="role" value="{{ role }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" style="gap: 8px; width: 796px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="email" name="email" value="{{ email }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" style="gap: 8px; width: 796px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="password" name="password" placeholder="at least 8 characters" required>
+        </div>
+        <div class="d-flex justify-content-center" style="padding-top: 38px; padding-bottom: 8px;">
+          <button class="btn-option" style="width: 287px; height: 48px; background: #EFB829; color: #0D5CAB; border-style: none;" type="submit" name="save">Save</button>
+        </div>
+        <div class="d-flex justify-content-center">
+          <a class="btn-option" href="{% url 'logout' %}" style="width: 287px; height: 48px; background: #CCCCCC; color: #0D5CAB; border-style: none;" name="logout">Logout</a>
+        </div>
+      </form>
+    </div>
+    
+
+  </div>
+
+
+  <a href="{% url 'logout' %}">Logout</a>
+
+  <!-- footer -->
+  {% block footer %}
+    {% include './items/footer.html' %}
+  {% endblock %}
+
+</body>
+</html>
