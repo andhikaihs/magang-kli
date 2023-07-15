@@ -6,11 +6,11 @@ def register(request):
     role_choices = User.ROLE_CHOICES 
     
     if request.method == 'POST':
-        full_name = request.POST['full_name']
-        nip = request.POST['nip']
-        role = request.POST['role']
-        email = request.POST['email']
-        password = request.POST['password']
+        full_name = request.POST.get('full_name')
+        nip = request.POST.get('nip')
+        role = request.POST.get('role')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
         # Check if user already exists
         if User.objects.filter(email=email).exists():
