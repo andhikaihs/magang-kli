@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group mb-3">
                           <label for="role" class="form-label">Role</label>
-                          <select class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="role" name="role" required>
+                          <select class="form-select" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="role" name="role" required>
                             {% for choice in role_choices %}
                             <option value="" selected disabled hidden>Choose Role</option>
                             <option value="{{ choice.0 }}">{{ choice.1 }}</option>
