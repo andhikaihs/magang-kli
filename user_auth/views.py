@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
+from .models import CustomUser
 from django.contrib.auth.hashers import make_password, check_password
 
 def register(request):
-    role_choices = User.ROLE_CHOICES 
+    role_choices = CustomUser.ROLE_CHOICES 
     
     if request.method == 'POST':
         full_name = request.POST.get('full_name')
@@ -13,11 +16,11 @@ def register(request):
         password = request.POST.get('password')
 
         # Check if user already exists
-        if User.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             return render(request, 'register.html', {'error': 'User with this email already exists.'})
 
         # Create a new user
-        user = User(full_name=full_name, nip=nip, role=role, email=email, password=make_password(password))
+        user = CustomUser(full_name=full_name, nip=nip, role=role, email=email, password=make_password(password))
         user.save()
 
         return redirect('/login')
@@ -31,8 +34,8 @@ def login(request):
 
         # Check if user exists
         try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
 
         # Check user password
@@ -48,7 +51,17 @@ def login(request):
         request.session['password'] = user.password
         return redirect('dashboard')
 
-    return render(request, 'login.html')
+    # Handling reset password
+    reset_form = PasswordResetForm(request.POST)
+    if reset_form.is_valid():
+        reset_form.save()
+        messages.success(request, 'Please check your email for further instructions.')
+
+    else:
+        form = AuthenticationForm()
+        reset_form = PasswordResetForm()
+
+    return render(request, 'login.html', {'form': form, 'reset_form': reset_form})
 
 def dashboard(request):
     user_id = request.session.get('user_id')
