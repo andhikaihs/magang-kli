@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password, check_password
 
@@ -51,17 +50,10 @@ def login(request):
         request.session['password'] = user.password
         return redirect('dashboard')
 
-    # Handling reset password
-    reset_form = PasswordResetForm(request.POST)
-    if reset_form.is_valid():
-        reset_form.save()
-        messages.success(request, 'Please check your email for further instructions.')
-
     else:
         form = AuthenticationForm()
-        reset_form = PasswordResetForm()
 
-    return render(request, 'login.html', {'form': form, 'reset_form': reset_form})
+    return render(request, 'login.html', {'form': form})
 
 def dashboard(request):
     user_id = request.session.get('user_id')
