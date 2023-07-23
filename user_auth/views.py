@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
 from django.contrib.auth.hashers import make_password, check_password
+
 
 def register(request):
     role_choices = CustomUser.ROLE_CHOICES 
@@ -42,7 +41,7 @@ def login(request):
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
 
         # Store user information in session
-        request.session['user_id'] = user.id
+        request.session['user_id'] = str(user.id)  # Convert UUID to string
         request.session['full_name'] = user.full_name
         request.session['nip'] = user.nip
         request.session['role'] = user.role
@@ -50,10 +49,7 @@ def login(request):
         request.session['password'] = user.password
         return redirect('dashboard')
 
-    else:
-        form = AuthenticationForm()
-
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html')
 
 def dashboard(request):
     user_id = request.session.get('user_id')
