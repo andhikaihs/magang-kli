@@ -11,4 +11,5 @@ urlpatterns = [
     path('role/', views.role, name='role'),
     path('role/delete/', views.delete, name='delete'),
     path('role/verification/', views.verification, name='verification'),
+    path('role/update/<id>/<role>/', views.update, name='update'),
 ]

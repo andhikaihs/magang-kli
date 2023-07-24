@@ -121,5 +121,12 @@ def verification(request):
         x = User.objects.get(id=id)
         x.verification = 'true'
         x.save()
+        
+    return redirect('/role')
+
+def update(request, id, role):
+    x = User.objects.get(id = id)
+    x.role = role
+    x.save()
 
     return redirect('/role')
