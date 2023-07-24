@@ -1,28 +1,10 @@
-{% if error %}
-  <p>{{ error }}</p>
-{% endif %}
+{% extends './items/base.html' %}
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block css %}../static/css/profile.css{% endblock %}
+{% block title %}Profile{% endblock %}
+{% block navbar %}{% include './items/navbar.html' %}{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../static/css/profile.css">
-    <script src="../static/js/bootstrap.js"></script>
-
-    <title>Profile</title>
-    <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
-  </head>
-
-  <body>
-  <!-- Navbar -->
-  {% block navbar %}
-    {% include './items/navbar.html' %}
-  {% endblock %}
-  
+{% block content %}
 
   <!-- MAIN -->
   <div class="container-fluid" style="height: 900px;">
@@ -67,10 +49,4 @@
 
   </div>
 
-  <!-- footer -->
-  {% block footer %}
-    {% include './items/footer.html' %}
-  {% endblock %}
-
-</body>
-</html>
+{% endblock %}
