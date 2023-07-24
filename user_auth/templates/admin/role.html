@@ -43,7 +43,6 @@
                   <th scope="col">Email</th>
                   <th scope="col">Role</th>
                   <th scope="col">Verification</th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -104,9 +103,7 @@
                           </div>
                         </div>
                       </div>
-                      {% endif %}
-                  </td>
-                  <td>    
+                      {% endif %}   
                       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                       <!-- ModalDelete -->
                       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -131,8 +128,6 @@
                         </div>
                       </div>
                     </td>
-                    {% else %}
-                    <td></td>
                     {% endif %}     
                 </tr>
                 {% endfor %}
