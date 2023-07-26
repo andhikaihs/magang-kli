@@ -18,7 +18,6 @@ def register(request):
         user = get_user_model().objects.create_user(username=email, full_name=full_name, nip=nip, roles=roles, email=email, password=password)
         print("username: ", email)
         print("email: ", email)
-        print("password terhash/tidak: ", password)
         print("New User:", user)
         user.save()
 
@@ -31,22 +30,21 @@ def login(request):
         email = request.POST['email']
         print("email: ", email)
         password = request.POST['password']
-        print("password: ", password)
 
-        
         # Check if user exists
         try:
-            user =User.objects.get(email=email)
+            user = User.objects.get(email=email)
             print("user is already exists: ", user)
         except get_user_model().objects.DoesNotExist:
             return render(request, 'login.html', {'error': 'You are not registered yet.'})
-
+        
+        
         # Check user password
         if not check_password(password, user.password):
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
         
         auth_login(request, user)
-        request.session['user_id'] = str(user.id)  # Convert UUID to string
+        request.session['user_id'] = str(user.id)
         request.session['full_name'] = user.full_name
         request.session['nip'] = user.nip
         request.session['roles'] = user.roles
@@ -76,13 +74,3 @@ def logout(request):
 
 def home(request):
     return render(request, 'home.html')
-
-# @login_required
-# def profile(request):
-#     full_name = request.session.get('full_name')
-#     nip = request.session.get('nip')
-#     role = request.session.get('role')
-#     email = request.session.get('email')
-#     password = request.session.get('password')
-
-#     return render(request, 'profile.html', {'full_name': full_name, 'nip': nip, 'role': role, 'email': email, 'password': password})

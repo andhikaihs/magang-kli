@@ -24,14 +24,19 @@
   {% block navbar %}
     {% include './items/navbar.html' %}
   {% endblock %}
-  
-  {% if user.is_authenticated %}
-  <p> Welcome, {{profile.user.full_name}} </p>
-  {% else %}
-  <p> Who are you kids </p>
-  {% endif %}
+
   <!-- MAIN -->
   <div class="container-fluid" style="height: 900px;">
+    {% if messages %}
+    <div class="container" style="padding-top: 10px;">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
     <div class="d-flex justify-content-center" style="padding-top: 59px; padding-bottom: 4px;">
       {% if profile.profile_picture %}
         <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" style="margin-bottom: 29px; object-fit:cover;width: 150px; height: 150px; border-radius: 50%; display: block;">
@@ -40,7 +45,7 @@
       {% endif %}
     </div>
     <div class="d-flex justify-content-center align-items-center">
-      <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+      <form method="POST" enctype="multipart/form-data" action="{% url 'profile' %}">
         {% csrf_token %}
         <div class="d-flex justify-content-center">
           <label for="profile_picture" class="form-label"></label>

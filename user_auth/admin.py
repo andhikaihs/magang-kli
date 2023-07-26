@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 
 class CustomUserAdmin(UserAdmin):
-    # Menampilkan field yang ingin ditampilkan di halaman admin
+    # Field yang ingin ditampilkan di halaman admin
     list_display = ('id', 'full_name', 'nip', 'email', 'roles', 'is_active', 'is_staff')
     
     # Field yang bisa dicari berdasarkan nama dan nip
@@ -27,5 +27,4 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
-# Daftarkan CustomUserAdmin sebagai admin untuk model User
 admin.site.register(User, CustomUserAdmin)
