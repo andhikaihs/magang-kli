@@ -25,21 +25,21 @@
                 <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Statistic</a>
+                <a class="nav-link" href="{% url 'statistic' %}">Statistic</a>
               </li>
-              {% if role == 'admin' %}
+              {% if user.roles == 'admin' %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Roles</a>
+                  <a class="nav-link" href="{% url 'roles' %}">Roles</a>
                 </li>
               {% endif %}
-              {% if role != 'petugas_monitor' %}
+              {% if user.roles != 'petugas_monitor' %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Input</a>
+                  <a class="nav-link" href="{% url 'input-as' %}">Input</a>
                 </li>
               {% endif %}
-              {% if role != 'petugas_input_agenda_setting' %}
+              {% if user.roles != 'petugas_input_agenda_setting' %}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Similarity Checker</a>
+                  <a class="nav-link" href="{% url 'similarity-checker' %}">Similarity Checker</a>
                 </li>
               {% endif %}
               <li class="nav-item" style="padding-right: 59px;">

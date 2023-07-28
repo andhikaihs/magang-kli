@@ -57,11 +57,11 @@ def login(request):
 def dashboard(request):
     user_id = request.session.get('user_id')
     full_name = request.session.get('full_name')
-    role = request.session.get('role')
+    roles = request.session.get('roles')
 
     if user_id and full_name:
         # if user is logged in
-        return render(request, 'dashboard.html', {'full_name': full_name, 'role': role})
+        return render(request, 'dashboard.html', {'full_name': full_name, 'roles': roles})
     else:
         # if user is not logged in, redirect to the login page
         return redirect('login')
