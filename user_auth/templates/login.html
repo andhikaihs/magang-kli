@@ -44,9 +44,9 @@
                           <label for="password" class="form-label" style="font-size: 16px; font-weight: 400;">Password</label>
                           <input type="password" class="form-control" style="gap: 8px; width: 388px; height: 48px; border-radius: 12px; border: 1px solid #D4D7E3;" id="password" name="password" placeholder="at least 8 characters">
                         </div>
-                        <div class="text-center">
-                          <a href="#" style="font-size: 14px; color: black; text-decoration: none;">forgot password?</a>
-                        </div>
+                        {% comment %} <div class="text-center">
+                          <a href="{% url 'forget_password' %}" style="font-size: 14px; color: black; text-decoration: none;">forget password?</a>
+                        </div> {% endcomment %}
                         <div class="d-flex justify-content-center pt-2">
                           <button class="btn-option" type="submit" name="login">Login</button>
                         </div>                                      
