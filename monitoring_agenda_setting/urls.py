@@ -19,10 +19,12 @@ from django.conf.urls.static import static
 from django.urls import path, include
 import user_auth.urls as user_auth
 import user_profile.urls as user_profile
+import input_agenda_setting.urls as input_agenda_setting
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_auth.urls')),
     path('', include('user_profile.urls')),
+    path('', include('input_agenda_setting.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auth',
     'user_profile',
+    'input_agenda_setting',
 ]
 
 MIDDLEWARE = [
