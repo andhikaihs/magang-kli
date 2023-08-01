@@ -21,7 +21,7 @@ import user_auth.urls as user_auth
 import user_profile.urls as user_profile
 import input_agenda_setting.urls as input_agenda_setting
 import similarity_checker.urls as similarity_checker
-
+import statistic.urls as statistic
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +29,5 @@ urlpatterns = [
     path('', include('user_profile.urls')),
     path('', include('input_agenda_setting.urls')),
     path('', include('similarity_checker.urls')),
+    path('', include('statistic.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
