@@ -74,3 +74,19 @@ def logout(request):
 
 def home(request):
     return render(request, 'home.html')
+
+def roles(request):
+    users = User.objects.all()
+    total_user = User.objects.count()
+    user_staff = User.objects.filter(is_staff=True).count()
+    user_input = User.objects.filter(roles='petugas_input_agenda').count()
+    user_monitor = User.objects.filter(roles='petugas_monitor').count()
+
+    context = {
+        'users': users,
+        'count_total_user': total_user,
+        'count_user_staff': user_staff,
+        'count_user_input': user_input,
+        'count_user_monitor': user_monitor,
+    }
+    return render(request, 'roles.html', context)
