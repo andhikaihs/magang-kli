@@ -29,14 +29,6 @@ def profile(request):
         # If user is not authenticated, redirect to custom login with the 'next' parameter
         next_url = reverse('profile')
         return redirect(reverse('login') + f'?next={next_url}')
-
-def similarity_checker(request):
-
-    return render(request, 'similarity-checker.html')
-
-def roles(request):
-
-    return render(request, 'roles.html')
-
+    
 def statistic(request):
     return render(request, 'statistic.html')

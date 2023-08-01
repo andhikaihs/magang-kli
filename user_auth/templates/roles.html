@@ -33,10 +33,10 @@
 
         <!-- Statistic User -->
         <div class="col-md-4">
-          <p style="font-size: 14px; font-weight: 700;">Jumlah User Aktif<br>Jumlah Petugas Input Agenda Setting<br>Jumlah Petugas Monitor<br>Jumlah User Pending</p>
+          <p style="font-size: 14px; font-weight: 700;">Jumlah User Staff<br>Jumlah User Aktif<br>Jumlah Petugas Input Agenda Setting<br>Jumlah Petugas Monitor<br></p>
         </div>
         <div class="col-md-8">
-          <p style="font-size: 14px; font-weight: 700;">: {{ count_total_user }}<br>: {{ count_user_input }}<br>: {{ count_user_monitor }}<br>: {{ count_user_pending }}</p>
+          <p style="font-size: 14px; font-weight: 700;">: {{ count_user_staff}}<br>: {{ count_total_user }}<br>: {{ count_user_input }}<br>: {{ count_user_monitor }}<br></p>
         </div>
 
         <!-- Table User -->
@@ -46,7 +46,6 @@
             <thead>
               <tr>
                 <th scope="col">id</th>
-                <th scope="col">Created</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">NIP</th>
                 <th scope="col">Email</th>
@@ -57,37 +56,37 @@
 
             <!-- Get data user from database-->
             <tbody>
-              {% for user in data %}
+              {% for user in users %}
               <tr>
                 <th scope="row">{{ user.id }}</th>
-                <td>{{ user.created }}</td>
                 <td>{{ user.full_name }}</td>
                 <td>{{ user.nip }}</td>
                 <td>{{ user.email }}</td>
-                <td>
+                <td>{{ user.roles }}</td>
+                {% comment %} <td>
                   <form method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                       {% if user.role == 'admin' %}
-                        <select class="form-control" id="role" name="role" disabled>
+                        <select class="form-control" id="role" name="roles" disabled>
                       {% else %}
-                        <select class="form-select" id="role" name="role">
+                        <select class="form-select" id="role" name="roles">
                       {% endif %}
 
                       <!-- Change User Roles -->
                       {% for choice in role_choices %}
-                        <option value="" selected disabled hidden>{{ user.role }}</option>
-                        <option value="" selected disabled hidden>{{ user.role }}</option>
+                        <option value="" selected disabled hidden>{{ user.roles }}</option>
+                        <option value="" selected disabled hidden>{{ user.roles }}</option>
                         <option value="{{ choice.0 }}">{{ choice.1 }}</option>
                       {% endfor %}
 
                         </select>
                     </div>
                   </form>
-                </td>
+                </td> {% endcomment %}
 
                 <!-- Verification for New User by admin (if new user not admin) -->
-                <td>
+                {% comment %} <td>
                   {% if not user.role == 'admin' %}
                     {% if user.verification == 'true' %}
                     <button type="button" class="btn btn-secondary" disabled>Accepted</button>
@@ -143,7 +142,7 @@
                         </div>
                       </div>
                     </div>
-                  {% endif %}     
+                  {% endif %}      {% endcomment %}
                 </td>
               </tr>
               {% endfor %}

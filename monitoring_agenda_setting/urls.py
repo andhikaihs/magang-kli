@@ -20,6 +20,7 @@ from django.urls import path, include
 import user_auth.urls as user_auth
 import user_profile.urls as user_profile
 import input_agenda_setting.urls as input_agenda_setting
+import similarity_checker.urls as similarity_checker
 
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path('', include('user_auth.urls')),
     path('', include('user_profile.urls')),
     path('', include('input_agenda_setting.urls')),
+    path('', include('similarity_checker.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

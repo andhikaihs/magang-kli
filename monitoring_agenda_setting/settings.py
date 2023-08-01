@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user_auth',
     'user_profile',
     'input_agenda_setting',
+    'similarity_checker',
 ]
 
 MIDDLEWARE = [
