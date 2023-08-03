@@ -63,7 +63,7 @@
                 <td>{{ user.nip }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles }}</td>
-               <td>
+               {% comment %} <td>
                   <form method="POST">
                     {% csrf_token %}
                     <div class="form-group">
@@ -83,7 +83,7 @@
                         </select>
                     </div>
                   </form>
-                </td>
+                </td> {% endcomment %}
 
                 <!-- Verification for New User by admin (if new user not admin) -->
                 <td>
