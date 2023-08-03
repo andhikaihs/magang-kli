@@ -11,14 +11,19 @@ def fetch_instagram_posts(account_url, start_date, end_date):
     for post in profile.get_posts():
         if start_date <= post.date <= end_date:
             post_info = {
+                'post_url': f"https://www.instagram.com/p/{post.shortcode}/",
                 'caption': post.caption,
                 'likes': post.likes,
                 'comments': post.comments,
                 'start_date': start_date,
                 'end_date': end_date,
+                'followers_count': profile.followers,
             }
             if post.is_video:
                 post_info['viewers'] = post.video_view_count
+            else:
+                post_info['viewers'] = None
+
             posts.append(post_info)
 
     return posts
@@ -49,15 +54,18 @@ def get_instagram_posts_all():
 
     return all_posts
 
-def get_instagram_posts_by_ue1(ue1):
+def get_instagram_posts_by_ue1(ue1, start_date=None, end_date=None):
     posts_by_ue1 = []
-    socmed_data_with_account_url = Instagram.objects.filter(Q(account_url__isnull=False) & ~Q(account_url=''), input_agenda_setting__isnull=False, ue1=ue1)
+    socmed_data_with_account_url = Instagram.objects.filter(
+        Q(account_url__isnull=False) & ~Q(account_url=''), 
+        input_agenda_setting__isnull=False, 
+        ue1=ue1
+    )
     for socmed_data in socmed_data_with_account_url:
         if socmed_data.input_agenda_setting:
-            start_date = socmed_data.input_agenda_setting.agenda_date_time_start
-            end_date = socmed_data.input_agenda_setting.agenda_date_time_end
             account_url = socmed_data.account_url
 
+            # Fetch posts with optional start_date and end_date
             posts = fetch_instagram_posts(account_url, start_date, end_date)
             posts_by_ue1.extend(posts)
 

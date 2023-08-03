@@ -63,7 +63,7 @@
                 <td>{{ user.nip }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles }}</td>
-                {% comment %} <td>
+               <td>
                   <form method="POST">
                     {% csrf_token %}
                     <div class="form-group">
@@ -83,10 +83,10 @@
                         </select>
                     </div>
                   </form>
-                </td> {% endcomment %}
+                </td>
 
                 <!-- Verification for New User by admin (if new user not admin) -->
-                {% comment %} <td>
+                <td>
                   {% if not user.role == 'admin' %}
                     {% if user.verification == 'true' %}
                     <button type="button" class="btn btn-secondary" disabled>Accepted</button>
@@ -106,7 +106,8 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <form method="POST" action="{% url 'verification' %}">
+                            {% comment %} <form method="POST" action="{% url 'verification' %}"> {% endcomment %}
+                            <form method="POST">
                               {% csrf_token %}
                               <input type="hidden" value="{{ user.id }}" name="id" name="id">
                               <button class="btn btn-primary" type="submit">Accept</button>
@@ -133,7 +134,8 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <form method="POST" action="{% url 'delete' %}">
+                            {% comment %} <form method="POST" action="{% url 'delete' %}"> {% endcomment %}
+                            <form method="POST">
                               {% csrf_token %}
                               <input type="hidden" value="{{ user.id }}" name="id" name="id">
                               <button class="btn btn-danger" type="submit">Delete</button>
@@ -142,7 +144,7 @@
                         </div>
                       </div>
                     </div>
-                  {% endif %}      {% endcomment %}
+                  {% endif %}
                 </td>
               </tr>
               {% endfor %}

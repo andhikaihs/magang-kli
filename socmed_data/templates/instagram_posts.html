@@ -5,7 +5,9 @@
 </head>
 <body>
     <h1>Instagram Posts by UE1: {{ ue1 }}</h1>
+    {% if start_date and end_date %}
     <p>Date Range: {{ start_date }} - {{ end_date }}</p>
+    {% endif %}
     {% if posts %}
     <ul>
         {% for post in posts %}
@@ -21,6 +23,6 @@
     </ul>
     {% else %}
         <p>No Instagram posts found within the specified date range.</p>
-    {% endif %}
+    {% endif %}    
 </body>
 </html>

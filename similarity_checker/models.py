@@ -1,31 +1,47 @@
 from django.db import models
-from input_agenda_setting.models import InputAgendaSetting
-from instaloader import Instaloader, Profile
 
-class InstagramAccount(models.Model):
-    account_url = models.URLField()
+class SimilarityChecker(models.Model):
+    SIMILARITY_CHOICES = [
+        ('Sesuai', 'Sesuai'), 
+        ('Tidak Sesuai', 'Tidak Sesuai'),
+    ]
+
+    UE1_CHOICES = (
+        ('Kemenkeu', 'Kemenkeu'),
+        ('Setjen', 'Setjen'),
+        ('DJA', 'DJA'),
+        ('DJP', 'DJP'),
+        ('DJPPR', 'DJPPR'),
+        ('DJPB', 'DJPB'),
+        ('DJKN', 'DJKN'),
+        ('DJBK', 'DJBK'),
+        ('Itjen', 'Itjen'),
+        ('DJBC', 'DJBC'),
+        ('BKF', 'BKF'),
+        ('BPPK', 'BPPK'),
+        ('SMV', 'SMV'),
+    )
+
+    SOCIAL_MEDIA_CHOICES = [
+        ('Facebook', 'Facebook'),
+        ('Instagram', 'Instagram'),
+        ('Linkedin', 'Linkedin'),
+        ('Tiktok', 'Tiktok'),
+        ('Twitter', 'Twitter'),
+        ('YouTube', 'YouTube'),
+    ]
+
+    ue1 = models.CharField(max_length=255, choices=UE1_CHOICES)
+    social_media = models.CharField(max_length=20, choices=SOCIAL_MEDIA_CHOICES)
+    account_url = models.URLField(max_length=200)
+    post_url = models.URLField(max_length=200)
+    captions = models.TextField()
+    topik = models.CharField(max_length=255)
+    pesan_kunci = models.CharField(max_length=255)
+    sub_pesan_kunci = models.CharField(max_length=255)
+    kesesuaian = models.CharField(max_length=50, choices=SIMILARITY_CHOICES)
+    catatan = models.TextField(blank=True)
+    checked_at = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
-        return self.account_url
-
-class InstagramCaption(models.Model):
-    account = models.ForeignKey(InstagramAccount, on_delete=models.CASCADE)
-    caption = models.TextField(blank=True)  # Allow empty caption
-    posted_date_time = models.DateTimeField(blank=True, null=True)  # Allow empty posted_date_time
-    agenda = models.ForeignKey(InputAgendaSetting, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.account} - {self.agenda.topik_agenda}"
-
-    def fetch_and_save_captions(self):
-        loader = Instaloader()
-        profile = Profile.from_username(loader.context, self.account.account_url)
-
-        for post in profile.get_posts():
-            if post.date_local <= self.agenda.agenda_date_time:
-                caption_text = post.caption
-                if caption_text:
-                    self.caption = caption_text
-                    self.posted_date_time = post.date_local
-                    self.save()
-                    break
+        return f"{self.ue1} - {self.topik} - {self.account_url}"
