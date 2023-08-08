@@ -166,3 +166,5 @@ def scrape_instagram_data_api(account_url, agenda_start, agenda_end):
         'comments': comments,
         'viewers': viewers,
     }
+
+    return scraped_data
