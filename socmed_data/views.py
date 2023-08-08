@@ -31,8 +31,6 @@ def instagram_detail_webscrap(request, ue1):
             data.followers = scraped_data['followers']
             data.post_urls = scraped_data['post_urls']
 
-            data.save()
-
     context = {
         'ue1': ue1,
         'agenda_start': agenda_start,
@@ -63,6 +61,8 @@ def instagram_detail_api(request, ue1):
             data.posts = scraped_data.get('posts', []) 
             data.followers = scraped_data.get('followers', [])
             data.post_urls = scraped_data.get('post_urls', [])
+
+            data.save()
 
     context = {
         'ue1': ue1,
