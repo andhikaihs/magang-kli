@@ -71,6 +71,9 @@ def instagram_detail_api(request, ue1):
 
     return render(request, 'instagram/instagram_detail_api.html', context)
 
+def test(request):
+    return render(request, 'instagram/test.html')
+
 
 """
 LINKEDIN with OAuth2

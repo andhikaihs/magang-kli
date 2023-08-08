@@ -1,52 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Instagram Post Information</title>
-</head>
-<body>
-    <h1>Instagram Post Information (API)</h1>
-    <p>UE1: {{ ue1 }}</p>
-    <p>Agenda Start: {{ agenda_start }}</p>
-    <p>Agenda End: {{ agenda_end }}</p>
-    <ul>
-        {% for data in socmed_data %}
-            <li>Account URL: {{ data.account_url }}</li>
-            <li>Followers: {{ data.followers }}</li>
-            <li>Posts: {{ data.posts }}</li>
-            <li>Post URLs:</li>
-            <ul>
-                {% for post_url in data.post_urls %}
-                    <li>{{ post_url }}</li>
-                {% endfor %}
-            </ul>
-            <li>Likes:</li>
-            <ul>
-                {% for like in data.likes %}
-                    <li>{{ like }}</li>
-                {% endfor %}
-            </ul>
-            <li>Comments:</li>
-            <ul>
-                {% for comment in data.comments %}
-                    <li>{{ comment }}</li>
-                {% endfor %}
-            </ul>
-            <li>Viewers:</li>
-            <ul>
-                {% for viewer in data.viewers %}
-                    <li>{{ viewer }}</li>
-                {% endfor %}
-            </ul>
-            <li>Captions:</li>
-            <ul>
-                <li>{{ data.captions }}</li>
-            </ul>
-            <br>
-        {% endfor %}
-    </ul>
-</body>
-</html> -->
-
 {% if error %}
   <p>{{ error }}</p>
 {% endif %}
@@ -65,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="../../static/js/bootstrap.js"></script>
 
-    <title>Instagram Post Information</title>
+    <title>Similarity Checker</title>
     <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
   </head>
 
@@ -81,14 +32,13 @@
       <div class="row d-flex justify-content-center" style="padding-top: 50px;">
 
         <!-- Statistic User -->
-        <h1 class="text-center" style="font-size: 20px; font-weight: 700;">Instagram Post Information (API)</h1>
+        <h1 class="text-center" style="font-size: 20px; font-weight: 700; padding-bottom: 20px;">Instagram Post Information (API)</h1>
 
         <div class="col-md-2">
           <p style="font-size: 14px; font-weight: 700;">Unit Eselon 1<br>Start Date - End Date<br>Account URL<br>Followers<br>Posts<br></p>
         </div>
-      {% for data in socmed_data %}
         <div class="col-md-10">
-          <p style="font-size: 14px; font-weight: 700;">: {{ ue1 }}<br>: {{ agenda_start }} - {{ agenda_end }}<br>: {{ data.account_url }}<br>: {{ data.followers }}<br>: {{ data.posts }}<br></p>
+          <p style="font-size: 14px; font-weight: 700;">: Kemenkeu<br>: Aug. 8, 2023, midnight - Aug. 8, 2023, 11:59 p.m.<br>: https://www.instagram.com/smindrawati/<br>: 2353745<br>: 2732<br></p>
         </div>
 
         <!-- Table User -->
@@ -107,18 +57,10 @@
             <!-- Get data user from database-->
             <tbody>
               <tr>
-                {% for post_url in data.post_urls %}
-                <td>{{ post_url }}</td>
-                {% endfor %}
-                {% for like in data.likes %}
-                <td>{{ like }}</td>
-                {% endfor %}
-                {% for comment in data.comments %}
-                <td>{{ comment }}</td>
-                {% endfor %}
-                {% for viewer in data.viewers %}
-                <td>{{ viewer }}</td>
-                {% endfor %}
+                <td>https://www.instagram.com/p/CvrtD2RpKi0</td>
+                <td>919</td>
+                <td>13</td>
+                <td>None</td>
                 <td>
                   <!-- Button for Caption Post -->
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Caption</button>
@@ -132,7 +74,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          {{ data.captions }}
+                          Pemerintah memiliki komitmen yang sangat serius pada dunia pendidikan. Hal ini terlihat dari kewajiban alokasi APBN #UangKita sebesar 20% di sektor ini. Hari ini, saya bersama dengan Pak @suahasil (yang sama-sama masih memiliki NIP dosen 13) dan jajaran @kemenkeuri lainnya berbincang dengan Prof. Ir. Nizam (Plt. Dirjen Dikti @kemendikbud.ri) terkait bagaimana kita bisa lebih memaksimalkan alokasi ini. Fokus pembicaraan kami adalah tentang pendanaan PTNBH kelas dunia yang berkelanjutan. Kami ingin mendengar dari Prof. Nizam supaya mendapatkan perspektif baru terkait pengelolaan anggaran ini. Selama berbincang, kami sepakat bahwa yang harus menjadi fokus kita adalah what is within our control. Model bisnis dan tata kelola harus terus kita evaluasi dan perbaiki. Tujuannya, supaya Indonesia memiliki perguruan tinggi yang kelas dunia. Masuk di ranking 100 besar dunia. Perlu bauran kebijakan dari beragam aspek disini. Tidak hanya di dalam universitasnya, namun juga dalam ekosistemnya..! Sebagai seseorang yang sangat dekat dengan dunia pendidikan, saya pastikan @kemenkeuri dan APBN #UangKita akan terus hadir mendukung dunia pendidikan di Indonesia..! Dari Dialog dengan Plt. Direktur Jenderal Pendidikan Tinggi, Prof. Ir. Nizam, M.Sc., DIC, Ph.D., IPU, Asean Eng. Jakarta, 8 Agustus 2023
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -145,7 +87,6 @@
             </tbody>
           </table>
         </div>
-      {% endfor %}
       </div>
     </div>
   </section>
