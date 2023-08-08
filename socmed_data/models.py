@@ -33,9 +33,9 @@ class SocialMediaData(models.Model):
     followers = models.IntegerField(null=True, blank=True)
     post_urls = models.TextField(null=True, blank=True)
     captions = models.TextField(null=True, blank=True)
-    likes = models.IntegerField(null=True, blank=True)
-    comments = models.IntegerField(null=True, blank=True)
-    viewers = models.IntegerField(null=True, blank=True)
+    viewers = models.TextField(null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
+    likes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
