@@ -4,7 +4,7 @@
     <title>Instagram Post Information</title>
 </head>
 <body>
-    <h1>Instagram Post Information</h1>
+    <h1>Instagram Post Information (API)</h1>
     <p>UE1: {{ ue1 }}</p>
     <p>Agenda Start: {{ agenda_start }}</p>
     <p>Agenda End: {{ agenda_end }}</p>
@@ -39,9 +39,7 @@
             </ul>
             <li>Captions:</li>
             <ul>
-                {% for caption in data.captions %}
-                    <li>{{ caption }}</li>
-                {% endfor %}
+                <li>{{ data.captions }}</li>
             </ul>
             <br>
         {% endfor %}

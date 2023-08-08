@@ -8,6 +8,7 @@ from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import linkedin_compliance_fix
 from input_agenda_setting.models import InputAgendaSetting
 from socmed_data.models import LinkedInPost
+from django.http import JsonResponse
 
 """
 INSTAGRAM with Web Scrapping
@@ -52,13 +53,14 @@ def instagram_detail_api(request, ue1):
     for data in socmed_data:
         if data.social_media == 'Instagram':
             scraped_data = scrape_instagram_data_api(data.account_url, agenda_start, agenda_end)
-            data.captions = "\n".join(scraped_data['captions'])
-            data.likes = scraped_data['likes']
-            data.comments = scraped_data['comments']
-            data.viewers = scraped_data['viewers']
-            data.posts = scraped_data['posts']
-            data.followers = scraped_data['followers']
-            data.post_urls = scraped_data['post_urls']
+            print("Scraped Data:", scraped_data)  # Debug print
+            data.captions = "\n".join(scraped_data.get('captions', []))
+            data.likes = scraped_data.get('likes', [])
+            data.comments = scraped_data.get('comments', [])
+            data.viewers = scraped_data.get('viewers', [])
+            data.posts = scraped_data.get('posts', []) 
+            data.followers = scraped_data.get('followers', [])
+            data.post_urls = scraped_data.get('post_urls', [])
 
     context = {
         'ue1': ue1,
