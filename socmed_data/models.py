@@ -1,45 +1,48 @@
 from django.db import models
-from input_agenda_setting.models import InputAgendaSetting
+from django.utils import timezone
 
-UE1_CHOICES = (
-    ('All', 'All'),
-    ('Kemenkeu', 'Kemenkeu'),
-    ('Setjen', 'Setjen'),
-    ('DJA', 'DJA'),
-    ('DJP', 'DJP'),
-    ('DJPPR', 'DJPPR'),
-    ('DJPB', 'DJPB'),
-    ('DJKN', 'DJKN'),
-    ('DJBK', 'DJBK'),
-    ('Itjen', 'Itjen'),
-    ('DJBC', 'DJBC'),
-    ('BKF', 'BKF'),
-    ('BPPK', 'BPPK'),
-    ('SMV', 'SMV'),
-)
-
-class SocmedData(models.Model):
-    ue1 = models.CharField(max_length=255, choices=UE1_CHOICES)
+class SocialMediaData(models.Model):
+    SOCIAL_MEDIA_CHOICES = (
+        ('Instagram', 'Instagram'),
+        ('Facebook', 'Facebook'),
+        ('Linkedin', 'Linkedin'),
+        ('Tiktok', 'Tiktok'),
+        ('Twitter', 'Twitter'),
+        ('YouTube', 'YouTube'),
+    )
+    
+    UE1_CHOICES = (
+        ('Kemenkeu', 'Kemenkeu'),
+        ('Setjen', 'Setjen'),
+        ('DJA', 'DJA'),
+        ('DJP', 'DJP'),
+        ('DJPPR', 'DJPPR'),
+        ('DJPB', 'DJPB'),
+        ('DJKN', 'DJKN'),
+        ('DJBK', 'DJBK'),
+        ('Itjen', 'Itjen'),
+        ('DJBC', 'DJBC'),
+        ('BKF', 'BKF'),
+        ('BPPK', 'BPPK'),
+        ('SMV', 'SMV'),
+    )
     account_url = models.URLField()
-    input_agenda_setting = models.ForeignKey(InputAgendaSetting, null=True, blank=True, on_delete=models.CASCADE)
+    social_media = models.CharField(max_length=20, choices=SOCIAL_MEDIA_CHOICES)
+    ue1 = models.CharField(max_length=50, choices=UE1_CHOICES)
+    captions = models.TextField(null=True, blank=True)
+    likes = models.IntegerField(null=True, blank=True)
+    comments = models.IntegerField(null=True, blank=True)
+    viewers = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"{self.social_media} - {self.ue1}"
+    
+class LinkedInPost(models.Model):
+    post_id = models.CharField(max_length=200, unique=True)
+    captions = models.TextField(null=True, blank=True)
+    reactions = models.IntegerField(default=0, null=True, blank=True)
+    post_date_time = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.ue1} - {self.account_url}"
-
-class Instagram(SocmedData):
-    pass
-
-class Linkedin(SocmedData):
-    pass
-
-class Youtube(SocmedData):
-    pass
-
-class Tiktok(SocmedData):
-    pass
-
-class Facebook(SocmedData):
-    pass
-
-class Twitter(SocmedData):
-    pass
+        return f"LinkedIn Post {self.post_id}"

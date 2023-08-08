@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instagram Post Information</title>
+</head>
+<body>
+    <h1>Instagram Post Information</h1>
+    <p>UE1: {{ ue1 }}</p>
+    <p>Agenda Start: {{ agenda_start }}</p>
+    <p>Agenda End: {{ agenda_end }}</p>
+    <ul>
+        {% for data in socmed_data %}
+            <li>Account URL: {{ data.account_url }}</li>
+            <li>Followers: {{ data.followers }}</li>
+            <li>Posts: {{ data.posts }}</li>
+            <li>Post URLs:</li>
+            <ul>
+                {% for post_url in data.post_urls %}
+                    <li>{{ post_url }}</li>
+                {% endfor %}
+            </ul>
+            <li>Likes:</li>
+            <ul>
+                {% for like in data.likes %}
+                    <li>{{ like }}</li>
+                {% endfor %}
+            </ul>
+            <li>Comments:</li>
+            <ul>
+                {% for comment in data.comments %}
+                    <li>{{ comment }}</li>
+                {% endfor %}
+            </ul>
+            <li>Viewers:</li>
+            <ul>
+                {% for viewer in data.viewers %}
+                    <li>{{ viewer }}</li>
+                {% endfor %}
+            </ul>
+            <li>Captions:</li>
+            <ul>
+                {% for caption in data.captions %}
+                    <li>{{ caption }}</li>
+                {% endfor %}
+            </ul>
+            <br>
+        {% endfor %}
+    </ul>
+</body>
+</html>
