@@ -159,3 +159,4 @@ FILE_UPLOAD_HANDLERS = [
 ]
 
 TIME_ZONE = 'Asia/Jakarta'
+

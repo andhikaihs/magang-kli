@@ -25,8 +25,8 @@ def statistic_agenda(request):
 
 
 def db_statistic(request):
-    socmed_data_list = SocmedData.objects.all()
-    total_socmed_data = SocmedData.objects.count()
+    socmed_data_list = SocialMediaData.objects.all()
+    total_socmed_data = SocialMediaData.objects.count()
     total_agendas = InputAgendaSetting.objects.count()
 
     context = {

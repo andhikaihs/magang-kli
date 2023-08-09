@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Similarity Checker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Text Similarity Checker</h1>
+    <p>Agenda: {{ agenda_setting.topik_agenda }}</p>
+
+    <h2>Text Similarity for UE1: {{ ue1 }}</h2>
+    <p>Average Similarity: {{ average_similarity }}</p>
+
+    <h2>Graph for UE1: {{ ue1 }}</h2>
+    <div style="width: 80%; margin: auto;">
+        <canvas id="myChart"></canvas>
+    </div>
+    <script>
+        var labels = {{ labels_json|safe }};
+        var data = {{ data_json|safe }};
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Average Similarity (%)',
+                    data: data,
+                    backgroundColor: '#EFB829',
+                    borderColor: '#EFB829',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    zoom: {
+                        zoom: {
+                            enabled: true,
+                            mode: 'xy'
+                        },
+                        pan: {
+                            enabled: true,
+                            mode: 'xy'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0,             
+                            max: 100,
+                            ticks: {
+                                stepSize: 10,
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Agenda Setting Accuracy',
+                        align: 'center',
+                        fontColor: '#EFB829'
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: (value) => {
+                            return value + '%';
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
