@@ -14,16 +14,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="../../static/css/instagram_detail_api.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="../../static/js/bootstrap.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
 
-    <title>Similarity Checker</title>
-    <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
+    <title>Instagram Post Information</title>
+    <link rel="icon" type="image/x-icon" href="../../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
   </head>
 
   <body>
   <!-- Navbar -->
   {% block navbar %}
-    {% include '../items/navbar.html' %}
+    {% include './items/navbar.html' %}
   {% endblock %}
 
   <!-- MAIN -->
@@ -93,7 +93,7 @@
 
   <!-- footer -->
   {% block footer %}
-  {% include '../items/footer.html' %}
+    {% include './items/footer.html' %}
   {% endblock %}
 
   </body>
