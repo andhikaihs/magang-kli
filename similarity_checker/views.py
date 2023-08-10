@@ -1,10 +1,11 @@
 import json
+import os
 from django.shortcuts import get_object_or_404, render, redirect
 from input_agenda_setting.models import InputAgendaSetting
 from similarity_checker.models import SimilarityChecker
 from django.contrib import messages
 import pandas as pd
-from django.http import HttpResponse, JsonResponse
+from django.http import FileResponse, HttpResponse, JsonResponse
 from socmed_data.models import SocialMediaData
 from socmed_data.utils import scrape_instagram_data_api
 from sklearn.feature_extraction.text import CountVectorizer
@@ -13,6 +14,8 @@ import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.metrics import jaccard_distance
+from django.core.files.base import ContentFile
+from io import BytesIO
 
 def similarity_checker(request):
     if request.method == 'POST':
@@ -115,24 +118,54 @@ def agenda_accuracy(request, ue1):
 
     return render(request, 'text_similarity_ue1.html', context)
 
-def download_excel(request):
-    agenda_setting = InputAgendaSetting.objects.first()  # Ganti dengan metode pemilihan agenda_setting yang sesuai
-    start_date = agenda_setting.agenda_date_time_start
-    end_date = agenda_setting.agenda_date_time_end
-    posts = SocialMediaData.objects.filter(post_date_time__range=(start_date, end_date))
+def download_excel(request, ue1):
+    file_path = os.path.join('path_to_your_excel_files', f'similarity_data_{ue1}.xlsx')
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as excel_file:
+            response = HttpResponse(excel_file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename=similarity_data_{ue1}.xlsx'
+            return response
+    else:
+        return HttpResponse("File not found.", status=404)
 
-    # Buat dataframe untuk data caption, likes, comments, dan viewers
-    data = {
-        'Caption': [post.caption for post in posts],
-        'Likes': [post.likes for post in posts],
-        'Comments': [post.comments for post in posts],
-        'Viewers': [post.viewers for post in posts],
-    }
-    df = pd.DataFrame(data)
 
-    # Simpan dataframe ke file Excel
-    response = HttpResponse(content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="social_media_posts.xlsx"'
-    df.to_excel(response, index=False)
+def download_agenda_accuracy(request, ue1):
+    agenda_setting = get_object_or_404(InputAgendaSetting)
+    agenda_start = agenda_setting.agenda_date_time_start
+    agenda_end = agenda_setting.agenda_date_time_end
+
+    stop_words = set(stopwords.words("indonesian"))
+
+    socmed_data = SocialMediaData.objects.filter(ue1=ue1, created_at__range=(agenda_start, agenda_end))
+
+    labels_graph = []
+    data_graph = []
+
+    for socmed_item in socmed_data:
+        scraped_data = scrape_instagram_data_api(socmed_item.account_url, agenda_start, agenda_end)
+        socmed_item.captions = "\n".join(scraped_data.get('captions', []))
+        socmed_item.post_urls = scraped_data.get('post_urls', [])
+        captions = socmed_item.captions.split('\n')  # Split captions into a list
+        post_urls = socmed_item.post_urls
+
+        for post_url, caption in zip(post_urls, captions):
+            caption_tokens = set(word_tokenize(caption.lower())) - stop_words
+            pesan_kunci_tokens = set(word_tokenize(agenda_setting.pesan_kunci.lower())) - stop_words
+            similarity = 1 - jaccard_distance(caption_tokens, pesan_kunci_tokens)
+            
+            labels_graph.append(post_url)
+            data_graph.append(similarity)
+            
+        # Create a DataFrame from the data_graph and labels_graph
+    df = pd.DataFrame({'Post URL': labels_graph, 'Similarity (%)': data_graph})
+
+    # Save the DataFrame to an Excel file in memory
+    excel_file = BytesIO()
+    with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
+        df.to_excel(writer, sheet_name='Sheet1', index=False)
+
+    # Set the appropriate headers for the response
+    response = HttpResponse(excel_file.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename=similarity_data_{ue1}.xlsx'
 
     return response
