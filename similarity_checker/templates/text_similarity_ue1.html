@@ -25,7 +25,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Average Similarity (%)',
+                    label: 'Average Accuracy (%)',
                     data: data,
                     backgroundColor: '#EFB829',
                     borderColor: '#EFB829',
@@ -78,5 +78,6 @@
             }
         });
     </script>
+            <a href="{% url 'download_agenda_accuracy' ue1 %}" class="btn btn-primary">Download Excel</a>
 </body>
 </html>
