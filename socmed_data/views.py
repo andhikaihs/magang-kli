@@ -66,12 +66,16 @@ def instagram_detail_api(request, ue1):
 
             data.save()
 
+    combined = zip(data.post_urls, data.likes, data.comments, data.viewers, data.captions)
+
     context = {
         'ue1': ue1,
         'agenda_start': agenda_start,
         'agenda_end': agenda_end,
         'socmed_data': socmed_data,
+        'combined' : combined,
     }
+
 
     return render(request, 'instagram/instagram_detail_api.html', context)
 

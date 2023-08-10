@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="../static/js/bootstrap.js"></script>
 
-    <title>Input Agenda Settings</title>
+    <title>Edit Agenda Settings</title>
     <link rel="icon" type="image/x-icon" href="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png">
 
     <!-- Load jQuery library (version 3.6.0) -->
@@ -47,7 +47,7 @@
 
         <!-- Title -->
         <div class="col-md-12 text-center">
-          <h1 style="font-size: 32px; font-weight: 700; padding-top: 53px; padding-bottom: 39px;">INPUT AGENDA SETTING</h1>
+          <h1 style="font-size: 32px; font-weight: 700; padding-top: 53px; padding-bottom: 39px;">EDIT AGENDA SETTING</h1>
         </div>
 
         <!-- Form Input Agenda Setting -->
@@ -58,24 +58,22 @@
               <div class="pb-3">
                 <label for="agenda_date_time" class="form-label">Pilih Durasi Agenda Setting: </label>
                 <input type="text" class="form-control" id="agenda_date_time" name="agenda_date_time" placeholder="Select date range" required>
-                <!-- Hidden input to store the selected value in the correct format -->
-                <input type="hidden" id="formatted_agenda_date_time" name="formatted_agenda_date_time">
               </div>     
               <div class="pb-3">
-                <label for="nomor_agenda" class="form-label">Nomor Agenda Setting</label>
-                <input type="text" class="form-control" id="nomor_agenda" name="nomor_agenda" placeholder="123456789" required>
+                <label for="nomor_agenda" class="form-label">Nomor Agenda: </label>
+                <input type="text" class="form-control" id="nomor_agenda" name="nomor_agenda" value="{{ agenda_setting.nomor_agenda }}" required>
               </div>
               <div class="pb-3">
-                <label for="topik" class="form-label">Topic</label>
-                <input type="text" class="form-control" id="topik_agenda" name="topik_agenda" placeholder="input topic" required>
+                <label for="topik" class="form-label">Topik Agenda: </label>
+                <input type="text" class="form-control" id="topik_agenda" name="topik_agenda" placeholder="input topic" value="{{ agenda_setting.topik_agenda }}" required>
               </div>
               <div class="pb-3">
-                <label for="pesan_kunci" class="form-label">Pesan Kunci</label>
-                <textarea type="text" class="form-control" id="pesan_kunci" name="pesan_kunci" placeholder="input key message" required>
+                <label for="pesan_kunci" class="form-label">Pesan Kunci: </label>
+                <input type="text" class="form-control" id="pesan_kunci" name="pesan_kunci" value="{{ agenda_setting.pesan_kunci }}" required>
               </div>
               <div class="pb-3">
-                <label for="sub_pesan_kunci" class="form-label">Sub Pesan Kunci</label>
-                <textarea type="text" class="form-control" id="sub_pesan_kunci" name="sub_pesan_kunci" placeholder="input sub key message" required>
+                <label for="sub_pesan_kunci" class="form-label">Sub Pesan Kunci: </label>
+                <input type="text" class="form-control" id="sub_pesan_kunci" name="sub_pesan_kunci" value="{{ agenda_setting.sub_pesan_kunci }}" required>
               </div>
             <!-- Submit Button -->
             <div class="col-md-12 d-flex justify-content-center" style="padding-top: 80px;">
