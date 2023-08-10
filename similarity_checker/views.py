@@ -169,3 +169,7 @@ def download_agenda_accuracy(request, ue1):
     response['Content-Disposition'] = f'attachment; filename=similarity_data_{ue1}.xlsx'
 
     return response
+
+
+def dashboard_similarity_checker(request):
+    return render(request, 'dashboard_similarity_checker.html')
