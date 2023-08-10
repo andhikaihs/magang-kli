@@ -22,3 +22,13 @@ def input_as(request):
         )
 
     return render(request, 'input-as.html')
+
+def table_input_as(request):
+    input_as_data = InputAgendaSetting.objects.all()
+    total_input_as = InputAgendaSetting.count()
+    
+    context = {
+        'input_as_data': input_as_data,
+        'total_input_as': total_input_as,
+    }
+    return render(request, 'table_input_as.html', context)
