@@ -73,10 +73,10 @@
                     {% endif %}
 
                     <!-- Button for Delete User Account -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
                     
                     <!-- ModalDelete -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -89,7 +89,7 @@
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             {% comment %} <form method="POST" action="{% url 'delete' %}"> {% endcomment %}
-                            <form method="POST">
+                            <form method="POST" action="{% url 'delete_agenda_setting' as.nomor_agenda %}">
                               {% csrf_token %}
                               <input type="hidden" value="{{ user.id }}" name="id" name="id">
                               <button class="btn btn-danger" type="submit">Delete</button>
