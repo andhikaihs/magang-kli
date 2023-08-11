@@ -84,9 +84,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'agenda_setting', #agenda_setting
-        'USER': 'root', #developerrisa
-        'PASSWORD': config('DB_PASSWORD'), #developerrisa123
-        'HOST': 'localhost', #db4free.net
+        'USER': 'developerrisa', #root #developerrisa
+        'PASSWORD': 'developerrisa123', #config('DB_PASSWORD') #developerrisa123 
+        'HOST': 'db4free.net', #localhost #db4free.net
         'PORT': '3306', #3306
         'OPTIONS': {
             'charset': 'utf8mb4',
