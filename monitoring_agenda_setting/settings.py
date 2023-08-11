@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'monitoring_agenda_setting.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'monitoring_agenda_setting',
-        'USER': 'root',
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'agenda_setting', #agenda_setting
+        'USER': 'root', #developerrisa
+        'PASSWORD': config('DB_PASSWORD'), #developerrisa123
+        'HOST': 'localhost', #db4free.net
+        'PORT': '3306', #3306
         'OPTIONS': {
             'charset': 'utf8mb4',
             'collation': 'utf8mb4_unicode_ci',
