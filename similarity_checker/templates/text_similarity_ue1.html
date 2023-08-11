@@ -35,7 +35,7 @@
           <div class="row d-flex justify-content-center">
             <h2 class="text-center" style="font-size: 20px; font-weight: 700;">Text Similarity for UE1: {{ ue1 }}</h2>
             <p style="font-size: 14px; font-weight: 700;">Agenda: {{ agenda_setting.topik_agenda }}</p>
-            <p style="font-size: 14px; font-weight: 700;">Average Similarity: {{ average_similarity }}</p>
+            <p style="font-size: 14px; font-weight: 700;">Average Similarity: {{ average_similarity|floatformat:2 }}</p>
 
             <h2 class="text-center" style="font-size: 20px; font-weight: 700;">Graph for UE1: {{ ue1 }}</h2>
             <div style="width: 80%; margin: auto;">
@@ -44,6 +44,10 @@
             <script>
                 var labels = {{ labels_json|safe }};
                 var data = {{ data_json|safe }};
+
+                data = data.map(function(value) {
+                  return value * 100;
+                });
 
                 var ctx = document.getElementById('myChart').getContext('2d');
                 var chart = new Chart(ctx, {

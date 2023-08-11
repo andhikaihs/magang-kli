@@ -102,7 +102,7 @@ def agenda_accuracy(request, ue1):
 
     # Calculate average similarity after the loop
     if len(data_graph) > 0:
-        average_similarity_graph = sum(data_graph) / len(data_graph)
+        average_similarity_graph = sum(data_graph) / len(data_graph) * 100
         print("avg sim graph: ", average_similarity_graph)
     else:
         average_similarity_graph = 0.0

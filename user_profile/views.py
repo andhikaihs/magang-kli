@@ -19,8 +19,6 @@ def profile(request):
             profile.user.save()
             profile.save()
 
-            messages.success(request, 'Successfully applied!')
-
             # Redirect to the profile page
             return redirect(reverse('profile'))
         
