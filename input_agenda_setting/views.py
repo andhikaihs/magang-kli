@@ -53,3 +53,10 @@ def edit_agenda_setting(request, id):
         
         return redirect('table_input_as')
     return render(request, 'edit_input-as.html', {'agenda_setting': agenda_setting})
+
+def delete_agenda_setting(request, nomor_agenda):
+    agenda = get_object_or_404(InputAgendaSetting, nomor_agenda=nomor_agenda)
+    
+    if request.method == 'POST':
+        agenda.delete()
+        return redirect('table_input_as')

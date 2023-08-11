@@ -119,7 +119,30 @@ def scrape_instagram_data_webscrap(account_url, agenda_start, agenda_end):
 """
 INSTAGRAM API LIBRARY
 """
-def scrape_instagram_data_api(account_url, agenda_start, agenda_end):
+def fetch_and_process_batch(loader, profile, agenda_start, agenda_end, batch_size=10):
+    post_urls = []
+    captions = []
+    likes = []
+    comments = []
+    viewers = []
+
+    posts = profile.get_posts()
+    
+    for post in posts:
+        post_date_utc = post.date.astimezone(pytz.UTC)
+        if post_date_utc <= agenda_end and post_date_utc >= agenda_start:
+            captions.append(post.caption)
+            likes.append(post.likes)
+            comments.append(post.comments)
+            viewers.append(post.video_view_count if post.is_video else None)
+            post_urls.append(f"https://www.instagram.com/p/{post.shortcode}")
+
+            if len(post_urls) >= batch_size:
+                break
+
+    return post_urls, captions, likes, comments, viewers
+
+def scrape_instagram_data_api(account_url, agenda_start, agenda_end, batch_size=10):
     parsed_url = urllib.parse.urlparse(account_url)
     username = parsed_url.path.strip('/')
     loader = instaloader.Instaloader()
@@ -127,6 +150,7 @@ def scrape_instagram_data_api(account_url, agenda_start, agenda_end):
     try:
         profile = instaloader.Profile.from_username(loader.context, username)
     except instaloader.exceptions.ProfileNotExistsException:
+        # Handle profile not found
         return {
             'followers': 0,
             'posts': 0,
@@ -137,29 +161,13 @@ def scrape_instagram_data_api(account_url, agenda_start, agenda_end):
             'viewers': [],
         }
 
-    followers = profile.followers
-    posts = profile.mediacount
-    post_urls = []
-    captions = []
-    likes = []
-    comments = []
-    viewers = []
-
-    # Loop through the posts to extract captions, likes, comments, viewers, and URLs
-    for post in profile.get_posts():
-        post_date_utc = post.date.astimezone(pytz.UTC)  # Convert post.date to UTC
-
-        if post_date_utc <= agenda_end and post_date_utc >= agenda_start:  # Compare with agenda_start and agenda_end
-            captions.append(post.caption)
-            likes.append(post.likes)
-            comments.append(post.comments)
-            viewers.append(post.video_view_count if post.is_video else None)
-            post_urls.append(f"https://www.instagram.com/p/{post.shortcode}")
+    # Fetch and process data in batches
+    post_urls, captions, likes, comments, viewers = fetch_and_process_batch(loader, profile, agenda_start, agenda_end, batch_size)
 
     # Return the scraped data as a dictionary
     scraped_data = {
-        'followers': followers,
-        'posts': posts,
+        'followers': profile.followers,
+        'posts': profile.mediacount,
         'post_urls': post_urls,
         'captions': captions,
         'likes': likes,

@@ -152,6 +152,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'
 
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.MemoryFileUploadHandler',
@@ -160,3 +161,5 @@ FILE_UPLOAD_HANDLERS = [
 
 TIME_ZONE = 'Asia/Jakarta'
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'  # Or use other appropriate session backends
+SESSION_COOKIE_SECURE = True  # If using HTTPS

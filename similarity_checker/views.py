@@ -102,7 +102,7 @@ def agenda_accuracy(request, ue1):
 
     # Calculate average similarity after the loop
     if len(data_graph) > 0:
-        average_similarity_graph = sum(data_graph) / len(data_graph)
+        average_similarity_graph = sum(data_graph) / len(data_graph) * 100
         print("avg sim graph: ", average_similarity_graph)
     else:
         average_similarity_graph = 0.0
@@ -169,3 +169,7 @@ def download_agenda_accuracy(request, ue1):
     response['Content-Disposition'] = f'attachment; filename=similarity_data_{ue1}.xlsx'
 
     return response
+
+
+def dashboard_similarity_checker(request):
+    return render(request, 'dashboard_similarity_checker.html')

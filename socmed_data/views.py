@@ -82,6 +82,16 @@ def instagram_detail_api(request, ue1):
 def test(request):
     return render(request, 'test.html')
 
+def fetch_ig_data_db(request, ue1):
+    ig_data = SocialMediaData.objects.all()
+
+    context = {
+        'ue1': ue1,
+        'ig_data': ig_data,
+    }
+
+    return render(request, 'instagram/instagram_detail_db.html', context)
+
 
 """
 LINKEDIN with OAuth2

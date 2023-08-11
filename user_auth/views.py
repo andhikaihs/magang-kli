@@ -33,9 +33,9 @@ def login(request):
 
         # Check if user exists
         try:
-            user = User.objects.get(email=email)
+            user = get_user_model().objects.get(email=email)
             print("user is already exists: ", user)
-        except get_user_model().objects.DoesNotExist:
+        except get_user_model().DoesNotExist:
             return render(request, 'login.html', {'error': 'You are not registered yet.'})
         
         
