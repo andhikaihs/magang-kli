@@ -14,10 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 import user_auth.urls as user_auth
+import user_profile.urls as user_profile
+import input_agenda_setting.urls as input_agenda_setting
+import similarity_checker.urls as similarity_checker
+import statistic.urls as statistic
+import socmed_data.urls as socmed_data
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_auth.urls')),
-]
+    path('', include('user_profile.urls')),
+    path('', include('input_agenda_setting.urls')),
+    path('', include('similarity_checker.urls')),
+    path('', include('statistic.urls')),
+    path('', include('socmed_data.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

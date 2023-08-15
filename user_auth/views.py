@@ -1,49 +1,53 @@
 from django.shortcuts import render, redirect
-from .models import User
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate, login as auth_login, logout, get_user_model
+from django.contrib.auth.decorators import login_required
+from .models import User
 
 def register(request):
-    role_choices = User.ROLE_CHOICES 
-    
     if request.method == 'POST':
-        full_name = request.POST.get('full_name')
-        nip = request.POST.get('nip')
-        role = request.POST.get('role')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        full_name = request.POST['full_name']
+        nip = request.POST['nip']
+        roles = request.POST['roles']
+        email = request.POST['email']
+        password = request.POST['password']
 
-        # Check if user already exists
-        if User.objects.filter(email=email).exists():
+        if get_user_model().objects.filter(email=email).exists():
             return render(request, 'register.html', {'error': 'User with this email already exists.'})
-
-        # Create a new user
-        user = User(full_name=full_name, nip=nip, role=role, email=email, password=make_password(password))
+          
+        user = get_user_model().objects.create_user(username=email, full_name=full_name, nip=nip, roles=roles, email=email, password=password)
+        print("username: ", email)
+        print("email: ", email)
+        print("New User:", user)
         user.save()
 
         return redirect('/login')
-
-    return render(request, 'register.html', {'role_choices': role_choices})
+    
+    return render(request, 'register.html')
 
 def login(request):
     if request.method == 'POST':
         email = request.POST['email']
+        print("email: ", email)
         password = request.POST['password']
 
         # Check if user exists
         try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return render(request, 'login.html', {'error': 'Invalid email or password.'})
-
+            user = get_user_model().objects.get(email=email)
+            print("user is already exists: ", user)
+        except get_user_model().DoesNotExist:
+            return render(request, 'login.html', {'error': 'You are not registered yet.'})
+        
+        
         # Check user password
         if not check_password(password, user.password):
             return render(request, 'login.html', {'error': 'Invalid email or password.'})
-
-        # Store user information in session
-        request.session['user_id'] = user.id
+        
+        auth_login(request, user)
+        request.session['user_id'] = str(user.id)
         request.session['full_name'] = user.full_name
         request.session['nip'] = user.nip
-        request.session['role'] = user.role
+        request.session['roles'] = user.roles
         request.session['email'] = user.email
         request.session['password'] = user.password
         return redirect('dashboard')
@@ -53,15 +57,16 @@ def login(request):
 def dashboard(request):
     user_id = request.session.get('user_id')
     full_name = request.session.get('full_name')
-    role = request.session.get('role')
+    roles = request.session.get('roles')
 
     if user_id and full_name:
         # if user is logged in
-        return render(request, 'dashboard.html', {'full_name': full_name, 'role': role})
+        return render(request, 'dashboard.html', {'full_name': full_name, 'roles': roles})
     else:
         # if user is not logged in, redirect to the login page
         return redirect('login')
     
+@login_required
 def logout(request):
     # Clear the session data
     request.session.clear()
@@ -70,11 +75,18 @@ def logout(request):
 def home(request):
     return render(request, 'home.html')
 
-def profile(request):
-    full_name = request.session.get('full_name')
-    nip = request.session.get('nip')
-    role = request.session.get('role')
-    email = request.session.get('email')
-    password = request.session.get('password')
+def roles(request):
+    users = User.objects.all()
+    total_user = User.objects.count()
+    user_staff = User.objects.filter(is_staff=True).count()
+    user_input = User.objects.filter(roles='petugas_input_agenda').count()
+    user_monitor = User.objects.filter(roles='petugas_monitor').count()
 
-    return render(request, 'profile.html', {'full_name': full_name, 'nip': nip, 'role': role, 'email': email, 'password': password})
+    context = {
+        'users': users,
+        'count_total_user': total_user,
+        'count_user_staff': user_staff,
+        'count_user_input': user_input,
+        'count_user_monitor': user_monitor,
+    }
+    return render(request, 'roles.html', context)

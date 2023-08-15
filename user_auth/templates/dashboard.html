@@ -41,16 +41,25 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li><a class="dropdown-item" href="#">All</a></li>
-                  <li><a class="dropdown-item" href="#">Kemenkeu</a></li>
-                  <li><a class="dropdown-item" href="#">Setjen</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item" href="{% url 'test' %}">Kemenkeu</a></li>
+                  <li><a class="dropdown-item" href="#">Setjen</a><li>
+                  <li><a class="dropdown-item" href="#">DJA</a></ l>
+                  <li><a class="dropdown-item" href="#">DJP</a></li>
+                  <li><a class="dropdown-item" href="#">DJPPR</a></li>
+                  <li><a class="dropdown-item" href="#">DJPB</a></li>
+                  <li><a class="dropdown-item" href="#">DJKN</a></li>
+                  <li><a class="dropdown-item" href="#">Itjen</a></li>
+                  <li><a class="dropdown-item" href="#">DJBC</a></li>
+                  <li><a class="dropdown-item" href="#">BKF</a></li>
+                  <li><a class="dropdown-item" href="#">BPPK</a></li>
+                  <li><a class="dropdown-item" href="#">SMV</a></li>
                 </ul>
               </div>
             </div>
             
           
             <div class="col-md-12">
-              <h1 style="font-size: 32px; font-weight: 700; color: black; padding-bottom: 20px;">SELAMAT DATANG</h1>
+              <h1 style="font-size: 32px; font-weight: 700; color: black; padding-bottom: 20px;">SELAMAT DATANG, {{ user.full_name }}</h1>
               <p style="font-size: 20px; font-weight: 400; color: black;">Monitoring Agenda Setting merupakan aplikasi<br>monitoring seluruh kanal media sosial milik<br>Kementerian Keuangan di seluruh Indonesia yang<br>diawasi oleh Subbagian Riset dan Audit, Biro<br>Komunikasi dan Layanan Informasi, Kementerian<br>Keuangan Republik Indonesia.</p>
             </div>
           </div>
