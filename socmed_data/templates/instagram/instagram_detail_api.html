@@ -15,135 +15,146 @@
   </head>
   <body>
     <!-- Navbar -->
-    <section>
-      <nav class="navbar navbar-expand-md navbar-light shadow-sm">
-        <div class="container-fluid" style="padding-left: 49px;">
-          <div class="row justify-content-center align-items-center">
-            <div class="col col-2">
-              <a class="navbar-brand" href="{% url 'dashboard' %}">
-                <img src="../../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png" alt="" width="55" height="51" class="d-inline-block align-text-top">
-              </a>
-            </div>
-            <div class="col col-10" style="font-size: 20px; font-weight: 700; padding-left: 34px;">
-              MONITORING AGENDA SETTING
-            </div>  
+  <section>
+    <nav class="navbar navbar-expand-md navbar-light shadow-sm">
+      <div class="container-fluid" style="padding-left: 49px;">
+        <div class="row justify-content-center align-items-center">
+          <div class="col col-2">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">
+              <img src="{% static 'img/Logo_kementerian_keuangan_republik_indonesia 1.png' %}" alt="" width="55" height="51" class="d-inline-block align-text-top">
+            </a>
           </div>
+          <div class="col col-10" style="font-size: 20px; font-weight: 700; padding-left: 34px;">
+            MONITORING AGENDA SETTING
+          </div>  
+        </div>
+        
+        <div class="ms-auto">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-          <div class="ms-auto">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-  
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <div class="d-flex">
-                <ul class="navbar-nav me-auto">
-                  <li class="nav-item mx-auto">
-                    <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
-                  </li>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item mx-auto">
+                  <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'statistic' %}">Statistic</a>
+                </li>
+                {% if user.roles == 'admin' %}
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'statistic' %}">Statistic</a>
+                    <a class="nav-link" href="{% url 'roles' %}">Roles</a>
                   </li>
-                  {% if user.roles == 'admin' %}
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'roles' %}">Roles</a>
-                    </li>
-                  {% endif %}
-                  {% if user.roles != 'petugas_monitor' %}
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'table_input_as' %}">Agenda Setting</a>
-                    </li>
-                  {% endif %}
-                  
-                  <li class="nav-item" style="padding-right: 59px;">
-                    <a class="btn-option" href="{% url 'profile' %}" type="submit">Profile</a>
+                {% endif %}
+                {% if user.roles != 'petugas_monitor' %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'table_input_as' %}">Agenda Setting</a>
                   </li>
-                </ul>
-              </div>
+                {% endif %}
+                <!-- {% if user.roles != 'petugas_input_agenda_setting' %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'similarity-checker' %}">Similarity Checker</a>
+                  </li>
+                {% endif %} -->
+                <li class="nav-item" style="padding-right: 59px;">
+                  <a class="btn-option" href="{% url 'profile' %}" type="submit">Profile</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </nav>
-    </section>
-
-    <!-- Content Section -->
-    <section>
-      <div class="container" style="height: 648px;">
-          <div class="row d-flex justify-content-center" style="padding-top: 50px;">
-              <!-- Statistic User -->
-              <h1 class="text-center" style="font-size: 20px; font-weight: 700; padding-bottom: 20px;">Instagram Post Information</h1>
-              <div class="col-md-2">
-                  <p style="font-size: 14px; font-weight: 700;">Unit Eselon 1<br>Start Date - End Date</p>
-              </div>
-              <div class="col-md-10">
-                  <p style="font-size: 14px; font-weight: 700;">: {{ ue1 }}<br>: {{ agenda_start }} - {{ agenda_end }}</p>
-              </div>
-          </div>
       </div>
+    </nav>
+  </section>
 
-      <!-- Table User -->
-      <div class="col-md-12" style="padding-top: 8px;">
-          {% for account_url, posts_data in account_data.items %}
-          <div class="mb-4">
-              <h5>Account URL: {{ account_url }}</h5>
-              <p>Average Similarity: {{ account_url.average_similarity }}%</p>
-          </div>
+  <!-- MAIN -->
+  <section>
+    <div class="container" style="min-height: 570px;">
+      <div class="row d-flex justify-content-center" style="padding-top: 50px;">
+
+        <!-- Statistic User -->
+        <h1 class="text-center" style="font-size: 20px; font-weight: 700; padding-bottom: 20px;">Instagram Post Information</h1>
+        {% for account_url, posts_data in account_data.items %}
+        <div class="col-md-2">
+          <p style="font-size: 14px; font-weight: 700;">Unit Eselon 1<br>Start Date - End Date<br>Account URL<br>Followers<br>Posts<br>Avarage Similarity<br></p>
+        </div>
+        <div class="col-md-10">
+          <p style="font-size: 14px; font-weight: 700;">: {{ ue1 }}<br>: {{ agenda_start }} - {{ agenda_end }}<br>: {{ account_url }}<br>: <br>: <br>: {{ account_url.average_similarity }}%<br></p>
+        </div>
+
+        <!-- Table User -->
+        <div class="col-md-12"  style="padding-top: 8px;">
           <table class="table table-hover">
-              <thead>
-                  <tr>
-                      <th scope="col">Post URLs</th>
-                      <th scope="col">Likes</th>
-                      <th scope="col">Comments</th>
-                      <th scope="col">Viewers</th>
-                      <th scope="col">Captions</th>
-                      <th scope="col">Accuracy (%)</th>
-                      <th scope="col">Status</th>
-                      <th scope="col"></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for post in posts_data %}
-                  <tr>
-                      <td>{{ post.post_urls }}</td>
-                      <td>{{ post.likes }}</td>
-                      <td>{{ post.comments }}</td>
-                      <td>{{ post.viewers }}</td>
-                      <td>
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
-                              Caption
-                          </button>
-                          <div class="modal fade" id="modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}" aria-hidden="true">
-                              <div class="modal-dialog modal-lg">
-                                  <div class="modal-content">
-                                      <div class="modal-header">
-                                          <h5 class="modal-title" id="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}">Caption</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                          <ul>
-                                              {% for caption_item in post.captions %}
-                                              <li>{{ caption_item }}</li>
-                                              {% endfor %}
-                                          </ul>
-                                      </div>
-                                      <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </td>
-                      <td>{{ post.similarity }}%</td>
-                      <td>Tidak Sesuai</td>
-                      <td>
-                          <a class="btn btn-warning" href="{% url 'similarity-checker' %}" role="button">Verifikasi</a>
-                      </td>
-                  </tr>
-                  {% endfor %}
-              </tbody>
+            <thead>
+              <tr>
+                <th scope="col">Post URLs</th>
+                <th scope="col">Likes</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Viewers</th>
+                <th scope="col">Captions</th>
+                <th scope="col">Accuracy (%)</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+
+            <!-- Get data user from database-->
+            <tbody>
+              {% for post in posts_data %}
+              <tr>
+                <td>{{ post.post_urls }}</td>
+                <td>{{ post.likes }}</td>
+                <td>{{ post.comments }}</td>
+                <td>{{ post.viewers }}</td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
+                    Caption
+                  </button>
+                </td>
+                <td>{{ post.similarity }}%</td>
+                {% if post.similarity == 0.0 %}
+                  <td>Tidak Sesuai</td>
+                {% else %}
+                  <td>Sesuai</td>
+                {% endif %}
+                <td>
+                  <a class="btn btn-warning" href="{% url 'similarity-checker' %}" role="button">Verifikasi</a>
+                </td>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}">Caption</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <ul>
+                          {% for caption_item in post.captions %}
+                          <li>{{ caption_item }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </tr>
+              {% endfor %}
+
+            </tbody>
           </table>
-          {% endfor %}
+        </div>
+        {% endfor %}
+
       </div>
-    </section>
+    </div>
+  </section>
 
     <!-- footer -->
     <section>
@@ -151,7 +162,7 @@
         <div class="row d-flex justify-content-center px-5">
           <div class="col-md-12" style="height: 64px;"></div>
           <div class="col-md-2">
-            <img src="../socmed_data/static/img/Logo_kementerian_keuangan_republik_indonesia 1.png" alt="" width="144" height="134">
+            <img src="{% static 'img/Logo_kementerian_keuangan_republik_indonesia 1.png' %}" alt="" width="144" height="134">
           </div>
           <div class="col-md-6">
             <h3 class="text-white" style="font-size: 24px; font-weight: 700;">KEMENTERIAN KEUANGAN</h3>
@@ -222,5 +233,5 @@
         </div>
       </div>
     </section>
-    </body>
-  </html>
+  </body>
+</html>
