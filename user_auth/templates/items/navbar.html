@@ -34,7 +34,7 @@
               {% endif %}
               {% if user.roles != 'petugas_monitor' %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'input-as' %}">Input</a>
+                  <a class="nav-link" href="{% url 'table_input_as' %}">Agenda Setting</a>
                 </li>
               {% endif %}
               {% if user.roles != 'petugas_input_agenda_setting' %}

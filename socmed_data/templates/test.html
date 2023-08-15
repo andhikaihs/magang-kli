@@ -57,7 +57,7 @@
                 {% endif %}
                 {% if user.roles != 'petugas_monitor' %}
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'input-as' %}">Input</a>
+                    <a class="nav-link" href="{% url 'table_input_as' %}">Agenda Setting</a>
                   </li>
                 {% endif %}
                 {% if user.roles != 'petugas_input_agenda_setting' %}
@@ -102,6 +102,9 @@
                 <th scope="col">Comments</th>
                 <th scope="col">Viewers</th>
                 <th scope="col">Captions</th>
+                <th scope="col">Accuracy (%)</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
               </tr>
             </thead>
 
@@ -117,27 +120,32 @@
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Caption
                   </button>
+                </td>
+                <td>8 %</td>
+                <td>Sesuai</td>
+                <td>
                   <a class="btn btn-warning" href="{% url 'similarity-checker' %}" role="button">Verifikasi</a>
+                </td>
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Caption</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          Pemerintah memiliki komitmen yang sangat serius pada dunia pendidikan. Hal ini terlihat dari kewajiban alokasi APBN #UangKita sebesar 20% di sektor ini. Hari ini, saya bersama dengan Pak @suahasil (yang sama-sama masih memiliki NIP dosen 13) dan jajaran @kemenkeuri lainnya berbincang dengan Prof. Ir. Nizam (Plt. Dirjen Dikti @kemendikbud.ri) terkait bagaimana kita bisa lebih memaksimalkan alokasi ini. Fokus pembicaraan kami adalah tentang pendanaan PTNBH kelas dunia yang berkelanjutan. Kami ingin mendengar dari Prof. Nizam supaya mendapatkan perspektif baru terkait pengelolaan anggaran ini. Selama berbincang, kami sepakat bahwa yang harus menjadi fokus kita adalah what is within our control. Model bisnis dan tata kelola harus terus kita evaluasi dan perbaiki. Tujuannya, supaya Indonesia memiliki perguruan tinggi yang kelas dunia. Masuk di ranking 100 besar dunia. Perlu bauran kebijakan dari beragam aspek disini. Tidak hanya di dalam universitasnya, namun juga dalam ekosistemnya..! Sebagai seseorang yang sangat dekat dengan dunia pendidikan, saya pastikan @kemenkeuri dan APBN #UangKita akan terus hadir mendukung dunia pendidikan di Indonesia..! Dari Dialog dengan Plt. Direktur Jenderal Pendidikan Tinggi, Prof. Ir. Nizam, M.Sc., DIC, Ph.D., IPU, Asean Eng. Jakarta, 8 Agustus 2023
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Caption</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Pemerintah memiliki komitmen yang sangat serius pada dunia pendidikan. Hal ini terlihat dari kewajiban alokasi APBN #UangKita sebesar 20% di sektor ini. Hari ini, saya bersama dengan Pak @suahasil (yang sama-sama masih memiliki NIP dosen 13) dan jajaran @kemenkeuri lainnya berbincang dengan Prof. Ir. Nizam (Plt. Dirjen Dikti @kemendikbud.ri) terkait bagaimana kita bisa lebih memaksimalkan alokasi ini. Fokus pembicaraan kami adalah tentang pendanaan PTNBH kelas dunia yang berkelanjutan. Kami ingin mendengar dari Prof. Nizam supaya mendapatkan perspektif baru terkait pengelolaan anggaran ini. Selama berbincang, kami sepakat bahwa yang harus menjadi fokus kita adalah what is within our control. Model bisnis dan tata kelola harus terus kita evaluasi dan perbaiki. Tujuannya, supaya Indonesia memiliki perguruan tinggi yang kelas dunia. Masuk di ranking 100 besar dunia. Perlu bauran kebijakan dari beragam aspek disini. Tidak hanya di dalam universitasnya, namun juga dalam ekosistemnya..! Sebagai seseorang yang sangat dekat dengan dunia pendidikan, saya pastikan @kemenkeuri dan APBN #UangKita akan terus hadir mendukung dunia pendidikan di Indonesia..! Dari Dialog dengan Plt. Direktur Jenderal Pendidikan Tinggi, Prof. Ir. Nizam, M.Sc., DIC, Ph.D., IPU, Asean Eng. Jakarta, 8 Agustus 2023
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       </div>
                     </div>
                   </div>
-                </td>
+                </div>
               </tr>
+
               <tr>
                 <td>https://www.instagram.com/p/KaSpo91hHa</td>
                 <td>821</td>
@@ -148,26 +156,31 @@
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Caption
                   </button>
+                </td>
+                <td>0 %</td>
+                <td>Tidak Sesuai</td>
+                <td>
                   <a class="btn btn-success" href="{% url 'similarity-checker' %}" role="button">Terverifikasi</a>
+                </td>
 
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Caption</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                           ini. Hari ini, saya bersama dengan Pak @suahasil (yang sama-sama masih memiliki NIP dosen 13) dan jajaran @kemenkeuri lainnya berbincang dengan Prof. Ir. Nizam (Plt. Dirjen Dikti @kemendikbud.ri) terkait bagaimana kita bisa lebih memaksimalkan alokasi ini. Fokus pembicaraan kami adalah tentang pendanaan PTNBH kelas dunia yang berkelanjutan. Kami ingin mendengar dari Prof. Nizam supaya mendapatkan perspektif baru terkait pengelolaan anggaran ini. Selama berbincang, kami sepakat bahwa yang harus menjadi fokus kita adalah what is within our control. Model bisnis dan tata kelola harus terus kita evaluasi dan perbaiki. Tujuannya, supaya Indonesia memiliki perguruan tinggi yang kelas dunia. Masuk di ranking 100 besar dunia. Perlu bauran kebijakan dari beragam aspek disini. Tidak hanya di dalam universitasnya, namun juga dalam ekosistemnya..! Sebagai seseorang yang sangat dekat dengan dunia pendidikan, saya pastikan @kemenkeuri dan APBN #UangKita akan terus hadir mendukung dunia pendidikan di Indonesia..! Dari Dialog dengan Plt. Direktur Jenderal Pendidikan Tinggi, Prof. Ir. Nizam, M.Sc., DIC, Ph.D., IPU, Asean Eng. Jakarta, 8 Agustus 2023
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Caption</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          ini. Hari ini, saya bersama dengan Pak @suahasil (yang sama-sama masih memiliki NIP dosen 13) dan jajaran @kemenkeuri lainnya berbincang dengan Prof. Ir. Nizam (Plt. Dirjen Dikti @kemendikbud.ri) terkait bagaimana kita bisa lebih memaksimalkan alokasi ini. Fokus pembicaraan kami adalah tentang pendanaan PTNBH kelas dunia yang berkelanjutan. Kami ingin mendengar dari Prof. Nizam supaya mendapatkan perspektif baru terkait pengelolaan anggaran ini. Selama berbincang, kami sepakat bahwa yang harus menjadi fokus kita adalah what is within our control. Model bisnis dan tata kelola harus terus kita evaluasi dan perbaiki. Tujuannya, supaya Indonesia memiliki perguruan tinggi yang kelas dunia. Masuk di ranking 100 besar dunia. Perlu bauran kebijakan dari beragam aspek disini. Tidak hanya di dalam universitasnya, namun juga dalam ekosistemnya..! Sebagai seseorang yang sangat dekat dengan dunia pendidikan, saya pastikan @kemenkeuri dan APBN #UangKita akan terus hadir mendukung dunia pendidikan di Indonesia..! Dari Dialog dengan Plt. Direktur Jenderal Pendidikan Tinggi, Prof. Ir. Nizam, M.Sc., DIC, Ph.D., IPU, Asean Eng. Jakarta, 8 Agustus 2023
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       </div>
                     </div>
                   </div>
-                </td>
+                </div>
+
               </tr>
 
             </tbody>

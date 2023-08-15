@@ -31,17 +31,9 @@
     <div class="container" style="height: 648px;">
       <div class="row d-flex justify-content-center" style="padding-top: 50px;">
 
-        <!-- Statistic User -->
-        <div class="col-md-4">
-          <p style="font-size: 14px; font-weight: 700;">Jumlah Agenda Setting<br></p>
-        </div>
-        <div class="col-md-8">
-          <p style="font-size: 14px; font-weight: 700;">: {{count_total_input_as}}<br></p>
-        </div>
-
         <!-- Table User -->
         <div class="col-md-12"  style="padding-top: 8px;">
-          <h1 class="text-center" style="font-size: 20px; font-weight: 700;">DATABASEAGENDA SETTING</h1>
+          <h1 class="text-center" style="font-size: 20px; font-weight: 700;">AGENDA SETTING MINGGU INI</h1>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -65,45 +57,14 @@
                 <td>{{ as.agenda_date_time_start}}</td>
                 <td>{{ as.agenda_date_time_end}}</td>
                 <td>
-                  {% if not user.role == 'admin' %}
-                    {% if user.verification == 'true' %}
-                    <button type="button" class="btn btn-secondary" disabled>Not Editable/button>
-                    {% else %}
-                    <a class="btn btn-primary" href="{% url 'edit_agenda_setting' as.id %}" type="submit">Edit</a>
-                    {% endif %}
-
-                    <!-- Button for Delete User Account -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    
-                    <!-- ModalDelete -->
-                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Delete Agenda Setting</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            Are you sure you want to delete this Agenda Setting?
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            {% comment %} <form method="POST" action="{% url 'delete' %}"> {% endcomment %}
-                            <form method="POST" action="{% url 'delete_agenda_setting' as.nomor_agenda %}">
-                              {% csrf_token %}
-                              <input type="hidden" value="{{ user.id }}" name="id" name="id">
-                              <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
                 </td>
               </tr>
-              {% endfor %}
             </tbody>
           </table>
+          <div class="d-flex justify-content-center">
+            <a class="btn-option" href="{% url 'edit_agenda_setting' as.id %}" type="submit">Edit</a>
+          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
