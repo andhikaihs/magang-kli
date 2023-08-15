@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     # PATH IG API LIBRARY (jangan dihapus)
     path('social-media/instagram/<str:ue1>/', views.instagram_detail_api, name='instagram_detail_api'),
-    path('social-media/instagram/', views.test, name='test'),
+    # path('social-media/instagram/', views.test, name='test'),
     # PATH IG WEB SCRAP (jangan dihapus)
     # path('social-media/instagram/<str:ue1>/', views.instagram_detail_webscrap, name='instagram_detail_webscrap'),
 

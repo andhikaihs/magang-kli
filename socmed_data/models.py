@@ -36,10 +36,11 @@ class SocialMediaData(models.Model):
     viewers = models.TextField(null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     likes = models.TextField(null=True, blank=True)
+    similarity = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
-        return f"{self.social_media} - {self.ue1}"
+        return f"{self.social_media} - {self.ue1} - {self.account_url}"
     
 class LinkedInPost(models.Model):
     post_id = models.CharField(max_length=200, unique=True)
