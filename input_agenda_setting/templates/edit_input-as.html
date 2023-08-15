@@ -56,7 +56,8 @@
               {% csrf_token %}
               <div class="pb-3">
                 <label for="agenda_date_time" class="form-label">Pilih Durasi Agenda Setting: </label>
-                <input type="text" class="form-control" id="agenda_date_time" name="agenda_date_time" placeholder="Select date range" required>
+                <p style="font-size: 12px"> Durasi Agenda Sekarang: {{ agenda_setting.agenda_date_time_start|date:'Y-m-d H:i:s' }} - {{ agenda_setting.agenda_date_time_end|date:'Y-m-d H:i:s' }} </p>
+                <input type="text" class="form-control" id="agenda_date_time" name="agenda_date_time" placeholder="Select new date range" required>
               </div>     
               <div class="pb-3">
                 <label for="nomor_agenda" class="form-label">Nomor Agenda: </label>
