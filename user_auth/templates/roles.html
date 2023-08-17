@@ -28,7 +28,7 @@
   
   <!-- MAIN -->
   <section>
-    <div class="container" style="height: 570px;">
+    <div class="container" style="height: 648px;">
       <div class="row d-flex justify-content-center" style="padding-top: 50px;">
 
         <!-- Statistic User -->
@@ -87,13 +87,13 @@
 
                 <!-- Verification for New User by admin (if new user not admin) -->
                 <td>
-                  <!-- {% if not user.role == 'admin' %}
+                  {% if not user.role == 'admin' %}
                     {% if user.verification == 'true' %}
                     <button type="button" class="btn btn-secondary" disabled>Accepted</button>
                     {% else %}
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Accept</button>
 
-                    Modal Verification
+                    <!-- Modal Verification -->
                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
@@ -116,7 +116,7 @@
                         </div>
                       </div>
                     </div>
-                  {% endif %} -->
+                    {% endif %}
 
                     <!-- Button for Delete User Account -->
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
