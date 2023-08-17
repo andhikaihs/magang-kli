@@ -12,14 +12,8 @@ from input_agenda_setting.models import InputAgendaSetting
 from socmed_data.models import LinkedInPost
 from django.http import HttpResponse, JsonResponse
 from socmed_data.utils import scrape_instagram_data_api
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.metrics import jaccard_distance
-from io import BytesIO
 from similarity_checker.views import calculate_similarity
 from django.db.models import Q
-from django.db import transaction
-from openpyxl import Workbook
 
 """
 INSTAGRAM with Web Scrapping
@@ -56,101 +50,6 @@ def instagram_detail_webscrap(request, ue1):
 """
 INSTAGRAM with API Library
 """
-# def instagram_detail_api(request, ue1):
-#     agenda_setting = get_object_or_404(InputAgendaSetting)
-#     agenda_start = agenda_setting.agenda_date_time_start
-#     agenda_end = agenda_setting.agenda_date_time_end
-
-#     socmed_data = SocialMediaData.objects.filter(ue1=ue1, created_at__range=(agenda_start, agenda_end))
-
-#     for data in socmed_data:
-#         if data.social_media == 'Instagram':
-#             scraped_data = scrape_instagram_data_api(data.account_url, agenda_start, agenda_end)
-#             print("Scraped Data:", scraped_data)  # Debug print
-#             data.captions = "\n".join(scraped_data.get('captions', []))
-#             data.likes = scraped_data.get('likes', [])
-#             data.comments = scraped_data.get('comments', [])
-#             data.viewers = scraped_data.get('viewers', [])
-#             data.posts = scraped_data.get('posts', []) 
-#             data.followers = scraped_data.get('followers', [])
-#             data.post_urls = scraped_data.get('post_urls', [])
-
-#             data.save()
-
-#     context = {
-#         'ue1': ue1,
-#         'agenda_start': agenda_start,
-#         'agenda_end': agenda_end,
-#         'socmed_data': socmed_data,
-#     }
-
-
-#     return render(request, 'instagram/instagram_detail_api.html', context)
-
-# def instagram_detail_api(request, ue1):
-#     agenda_setting = get_object_or_404(InputAgendaSetting)
-#     agenda_start = agenda_setting.agenda_date_time_start
-#     agenda_end = agenda_setting.agenda_date_time_end
-
-#     socmed_data = []
-#     labels_graph = []
-#     data_graph = []
-#     account_data = {}
-
-#     for data in SocialMediaData.objects.filter(ue1=ue1, created_at__range=(agenda_start, agenda_end)):
-#         if data.social_media == 'Instagram':
-#             scraped_data = scrape_instagram_data_api(data.account_url, agenda_start, agenda_end)
-#             captions = scraped_data.get('captions', [])
-#             likes = scraped_data.get('likes', [])
-#             comments = scraped_data.get('comments', [])
-#             viewers = scraped_data.get('viewers', [])
-#             post_urls = scraped_data.get('post_urls', [])
-#             followers = scraped_data.get('followers', [])
-
-#             for post_url, caption, like, comment, viewer in zip(post_urls, captions, likes, comments, viewers):
-#                 # Calculate similarity
-#                 similarity = calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
-#                 data_graph.append(similarity)
-
-#                 updates = {
-#                     'account_url': data.account_url,
-#                     'social_media': data.social_media,
-#                     'ue1': data.ue1,
-#                     'posts': data.posts,
-#                     'followers': followers,
-#                     'post_urls': post_url,
-#                     'captions': caption,
-#                     'viewers': viewer,
-#                     'comments': comment,
-#                     'likes': like,
-#                     'similarity': similarity,
-#                 }
-#                 if data.account_url not in account_data:
-#                     account_data[data.account_url] = []
-#                 account_data[data.account_url].append(updates)
-
-#                 # Update the queryset with OR conditions for post_url and ue1
-#                 SocialMediaData.objects.filter(Q(ue1=data.ue1) & Q(post_urls=post_url)).update(**updates)
-
-#     # Calculate average similarity
-#     if len(data_graph) > 0:
-#         average_similarity_graph = sum(data_graph) / len(data_graph) * 100
-#     else:
-#         average_similarity_graph = 0.0
-
-#     context = {
-#         'ue1': ue1,
-#         'agenda_start': agenda_start,
-#         'agenda_end': agenda_end,
-#         'socmed_data': socmed_data,
-#         'average_similarity': average_similarity_graph,
-#         'account_data': account_data,
-#         'labels_json': json.dumps(labels_graph),
-#         'data_json': json.dumps(data_graph),
-#     }
-
-#     return render(request, 'instagram/instagram_detail_api.html', context)
-
 def instagram_detail_api(request, ue1):
     agenda_setting = get_object_or_404(InputAgendaSetting)
     agenda_start = agenda_setting.agenda_date_time_start
