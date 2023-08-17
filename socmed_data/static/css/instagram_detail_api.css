@@ -10871,6 +10871,12 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+
+  .verified-button {
+    background-color: green !important;
+    color: white !important;
+  }
+  
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

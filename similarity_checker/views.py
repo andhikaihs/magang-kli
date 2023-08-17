@@ -8,13 +8,9 @@ import pandas as pd
 from django.http import FileResponse, HttpResponse, JsonResponse
 from socmed_data.models import SocialMediaData
 from socmed_data.utils import scrape_instagram_data_api
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.metrics import jaccard_distance
-from django.core.files.base import ContentFile
 from io import BytesIO
 
 def similarity_checker(request):
@@ -50,19 +46,21 @@ def similarity_checker(request):
 """
 SIMILARITY ACCURACY
 """
-def calculate_similarity(text1, text2):
+def calculate_similarity(text1, text2, text3):
     # Tokenize the texts
     tokens1 = set(word_tokenize(text1.lower()))
     tokens2 = set(word_tokenize(text2.lower()))
+    tokens3 = set(word_tokenize(text3.lower()))
 
     # Remove stop words
     stop_words = set(stopwords.words("indonesian"))
     tokens1 = tokens1 - stop_words
     tokens2 = tokens2 - stop_words
+    tokens3 = tokens3 - stop_words
 
     # Calculate Jaccard similarity
-    intersection = len(tokens1.intersection(tokens2))
-    union = len(tokens1) + len(tokens2) - intersection
+    intersection = len(tokens1.intersection(tokens2).intersection(tokens3))
+    union = len(tokens1) + len(tokens2) + len(tokens3) - intersection
     jaccard_similarity = intersection / union
 
     # Convert similarity to percentage

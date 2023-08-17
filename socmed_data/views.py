@@ -1,4 +1,6 @@
 import datetime
+import json
+import pandas as pd
 from django.shortcuts import get_object_or_404, render
 import requests
 from input_agenda_setting.models import InputAgendaSetting
@@ -8,7 +10,10 @@ from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import linkedin_compliance_fix
 from input_agenda_setting.models import InputAgendaSetting
 from socmed_data.models import LinkedInPost
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from socmed_data.utils import scrape_instagram_data_api
+from similarity_checker.views import calculate_similarity
+from django.db.models import Q
 
 """
 INSTAGRAM with Web Scrapping
@@ -50,34 +55,159 @@ def instagram_detail_api(request, ue1):
     agenda_start = agenda_setting.agenda_date_time_start
     agenda_end = agenda_setting.agenda_date_time_end
 
-    socmed_data = SocialMediaData.objects.filter(ue1=ue1, created_at__range=(agenda_start, agenda_end))
+    account_data = []
 
-    for data in socmed_data:
-        if data.social_media == 'Instagram':
-            scraped_data = scrape_instagram_data_api(data.account_url, agenda_start, agenda_end)
-            print("Scraped Data:", scraped_data)  # Debug print
-            data.captions = "\n".join(scraped_data.get('captions', []))
-            data.likes = scraped_data.get('likes', [])
-            data.comments = scraped_data.get('comments', [])
-            data.viewers = scraped_data.get('viewers', [])
-            data.posts = scraped_data.get('posts', []) 
-            data.followers = scraped_data.get('followers', [])
-            data.post_urls = scraped_data.get('post_urls', [])
+    # Get all unique account URLs for the specified UE1
+    account_urls = SocialMediaData.objects.filter(ue1=ue1).values_list('account_url', flat=True).distinct()
 
-            data.save()
+    total_similarity = 0
+    total_entries = 0
 
-    combined = zip(data.post_urls, data.likes, data.comments, data.viewers, data.captions)
+    for account_url in account_urls:
+        scraped_data = scrape_instagram_data_api(account_url, agenda_start, agenda_end)
+        captions = scraped_data.get('captions', [])
+        likes = scraped_data.get('likes', [])
+        comments = scraped_data.get('comments', [])
+        viewers = scraped_data.get('viewers', [])
+        post_urls = scraped_data.get('post_urls', [])
+        followers = scraped_data.get('followers', [])
+        posts = scraped_data.get('posts', 0)
+
+        similarity_values = []
+
+        account_info = {
+            'account_url': account_url,
+            'social_media': 'Instagram',  # Update this as needed
+            'ue1': ue1,
+            'posts': posts,
+            'followers': followers,
+            'account_data': [],
+        }
+
+        account_data_entries = []
+
+        for post_url, caption, viewer, comment, like in zip(post_urls, captions, viewers, comments, likes):
+            similarity = calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
+            similarity_values.append(similarity)
+            
+            entry = {
+                'post_url': post_url,
+                'caption': caption,
+                'viewer': viewer,
+                'comment': comment,
+                'like': like,
+                'similarity': similarity,
+                'status_similarity': 'Sesuai' if similarity != 0.0 else 'Tidak Sesuai',
+            }
+            account_data_entries.append(entry)
+
+            total_similarity += similarity
+            total_entries += 1
+
+        account_info['account_data'] = account_data_entries
+        account_data.append(account_info)
+
+    average_similarity = total_similarity / total_entries if total_entries > 0 else 0
 
     context = {
         'ue1': ue1,
         'agenda_start': agenda_start,
         'agenda_end': agenda_end,
-        'socmed_data': socmed_data,
-        'combined' : combined,
+        'account_data': account_data,
+        'average_similarity': average_similarity,
     }
 
-
     return render(request, 'instagram/instagram_detail_api.html', context)
+
+def download_excel(request, ue1):
+    agenda_setting = get_object_or_404(InputAgendaSetting)
+    agenda_start = agenda_setting.agenda_date_time_start
+    agenda_end = agenda_setting.agenda_date_time_end
+
+    account_data = []
+
+    # Get all unique account URLs for the specified UE1
+    account_urls = SocialMediaData.objects.filter(ue1=ue1).values_list('account_url', flat=True).distinct()
+
+    total_similarity = 0
+    total_entries = 0
+
+    for account_url in account_urls:
+        scraped_data = scrape_instagram_data_api(account_url, agenda_start, agenda_end)
+        captions = scraped_data.get('captions', [])
+        likes = scraped_data.get('likes', [])
+        comments = scraped_data.get('comments', [])
+        viewers = scraped_data.get('viewers', [])
+        post_urls = scraped_data.get('post_urls', [])
+        followers = scraped_data.get('followers', [])
+        posts = scraped_data.get('posts', 0)
+
+        similarity_values = []
+
+        account_info = {
+            'account_url': account_url,
+            'social_media': 'Instagram',
+            'ue1': ue1,
+            'posts': posts,
+            'followers': followers,
+            'account_data': [],
+        }
+
+        account_data_entries = []
+
+        for post_url, caption, viewer, comment, like in zip(post_urls, captions, viewers, comments, likes):
+            similarity = calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
+            similarity_values.append(similarity)
+            
+            entry = {
+                'post_url': post_url,
+                'caption': caption,
+                'viewer': viewer,
+                'comment': comment,
+                'like': like,
+                'similarity': similarity,
+                'status_similarity': 'Sesuai' if similarity != 0.0 else 'Tidak Sesuai',
+            }
+            account_data_entries.append(entry)
+
+            total_similarity += similarity
+            total_entries += 1
+
+        account_info['account_data'] = account_data_entries
+        account_data.append(account_info)
+
+    average_similarity = total_similarity / total_entries if total_entries > 0 else 0
+
+    df_data = []
+    for account_info in account_data:
+        for entry in account_info['account_data']:
+            df_data.append({
+                'Account URL': account_info['account_url'],
+                'Social Media': account_info['social_media'],
+                'UE1': account_info['ue1'],
+                'Posts': account_info['posts'],
+                'Followers': account_info['followers'],
+                'Post URL': entry['post_url'],
+                'Caption': entry['caption'],
+                'Viewer': entry['viewer'],
+                'Comment': entry['comment'],
+                'Like': entry['like'],
+                'Similarity': entry['similarity'],
+                'Status': entry['status_similarity'],
+            })
+
+    excel_filename = f'instagram_data_{ue1}.xlsx'
+
+    df = pd.DataFrame(df_data)
+
+    excel_file = pd.ExcelWriter(excel_filename, engine='xlsxwriter')
+    df.to_excel(excel_file, sheet_name='Sheet1', index=False)
+    excel_file.save()
+
+    with open(excel_filename, 'rb') as excel:
+        response = HttpResponse(excel.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename={excel_filename}'
+        return response
 
 def test(request):
     return render(request, 'test.html')
@@ -91,7 +221,6 @@ def fetch_ig_data_db(request, ue1):
     }
 
     return render(request, 'instagram/instagram_detail_db.html', context)
-
 
 """
 LINKEDIN with OAuth2
@@ -190,9 +319,9 @@ def fetch_linkedin_data_oauth2(request):
 
     return render(request, "linkedin/authorization_linkedin.html", {'authorization_url': authorization_url})
 
-"""
-LINKEDIN without OAuth2
-"""
+# """
+# LINKEDIN without OAuth2
+# """
 def fetch_linkedin_data(request):
     agenda_setting = InputAgendaSetting.objects.get(id=2)
 
