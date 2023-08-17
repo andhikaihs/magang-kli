@@ -156,13 +156,13 @@ def instagram_detail_api(request, ue1):
     agenda_start = agenda_setting.agenda_date_time_start
     agenda_end = agenda_setting.agenda_date_time_end
 
-    socmed_data = []
-    labels_graph = []
-    data_graph = []
-    account_data = {}
+    account_data = []
 
     # Get all unique account URLs for the specified UE1
     account_urls = SocialMediaData.objects.filter(ue1=ue1).values_list('account_url', flat=True).distinct()
+
+    total_similarity = 0
+    total_entries = 0
 
     for account_url in account_urls:
         scraped_data = scrape_instagram_data_api(account_url, agenda_start, agenda_end)
@@ -174,89 +174,141 @@ def instagram_detail_api(request, ue1):
         followers = scraped_data.get('followers', [])
         posts = scraped_data.get('posts', 0)
 
+        similarity_values = []
+
         account_info = {
             'account_url': account_url,
-            'followers': followers,
+            'social_media': 'Instagram',  # Update this as needed
+            'ue1': ue1,
             'posts': posts,
+            'followers': followers,
             'account_data': [],
         }
 
-        account_info['account_data'] = [
-            {
-                'post_urls': post_url,
-                'captions': caption,
-                'likes': like,
-                'comments': comment,
-                'viewers': viewer,
-                'similarity': calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci),
+        account_data_entries = []
+
+        for post_url, caption, viewer, comment, like in zip(post_urls, captions, viewers, comments, likes):
+            similarity = calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
+            similarity_values.append(similarity)
+            
+            entry = {
+                'post_url': post_url,
+                'caption': caption,
+                'viewer': viewer,
+                'comment': comment,
+                'like': like,
+                'similarity': similarity,
+                'status_similarity': 'Sesuai' if similarity != 0.0 else 'Tidak Sesuai',
             }
-            for post_url, caption, like, comment, viewer
-            in zip(post_urls, captions, likes, comments, viewers)
-        ]
+            account_data_entries.append(entry)
 
-        # Calculate and append similarity values to data_graph
-        similarity_values = [
-            calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
-            for caption in captions
-        ]
-        data_graph.extend(similarity_values)
+            total_similarity += similarity
+            total_entries += 1
 
-        account_data[account_url] = account_info
+        account_info['account_data'] = account_data_entries
+        account_data.append(account_info)
 
-    # Calculate average similarity after the loop
-    if len(data_graph) > 0:
-        average_similarity_graph = sum(data_graph) / len(data_graph) * 100
-    else:
-        average_similarity_graph = 0.0
+    average_similarity = total_similarity / total_entries if total_entries > 0 else 0
 
     context = {
         'ue1': ue1,
         'agenda_start': agenda_start,
         'agenda_end': agenda_end,
-        'socmed_data': socmed_data,
         'account_data': account_data,
-        'average_similarity': average_similarity_graph,
-        'labels_json': json.dumps(labels_graph),
-        'data_json': json.dumps(data_graph),
+        'average_similarity': average_similarity,
     }
 
     return render(request, 'instagram/instagram_detail_api.html', context)
 
-def download_excel(request):
-    # Extract the data from the POST request's body
-    post_data = request.POST.get('data', '')
+def download_excel(request, ue1):
+    agenda_setting = get_object_or_404(InputAgendaSetting)
+    agenda_start = agenda_setting.agenda_date_time_start
+    agenda_end = agenda_setting.agenda_date_time_end
 
-    # Convert the JSON data to a list of dictionaries
-    data_list = json.loads(post_data)
+    account_data = []
 
-    # Create a DataFrame from the list of dictionaries
-    df = pd.DataFrame(data_list)
+    # Get all unique account URLs for the specified UE1
+    account_urls = SocialMediaData.objects.filter(ue1=ue1).values_list('account_url', flat=True).distinct()
 
-    # Create an in-memory Excel file using Pandas
-    excel_file = BytesIO()
-    with pd.ExcelWriter(excel_file, engine='xlsxwriter') as writer:
-        df.to_excel(writer, sheet_name='Sheet1', index=False)
-        workbook = writer.book
-        worksheet = writer.sheets['Sheet1']
+    total_similarity = 0
+    total_entries = 0
 
-        # Set the column widths based on content
-        for idx, column in enumerate(df):
-            series = df[column]
-            max_len = max(
-                series.astype(str).apply(len).max(),
-                len(str(column))
-            )
-            col_width = max_len + 2  # padding
-            worksheet.set_column(idx, idx, col_width)
+    for account_url in account_urls:
+        scraped_data = scrape_instagram_data_api(account_url, agenda_start, agenda_end)
+        captions = scraped_data.get('captions', [])
+        likes = scraped_data.get('likes', [])
+        comments = scraped_data.get('comments', [])
+        viewers = scraped_data.get('viewers', [])
+        post_urls = scraped_data.get('post_urls', [])
+        followers = scraped_data.get('followers', [])
+        posts = scraped_data.get('posts', 0)
 
-    # Prepare the response
-    response = HttpResponse(
-        excel_file.getvalue(),
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
-    response['Content-Disposition'] = 'attachment; filename=social_media_data.xlsx'
+        similarity_values = []
 
-    return response
+        account_info = {
+            'account_url': account_url,
+            'social_media': 'Instagram',
+            'ue1': ue1,
+            'posts': posts,
+            'followers': followers,
+            'account_data': [],
+        }
+
+        account_data_entries = []
+
+        for post_url, caption, viewer, comment, like in zip(post_urls, captions, viewers, comments, likes):
+            similarity = calculate_similarity(caption, agenda_setting.pesan_kunci, agenda_setting.sub_pesan_kunci)
+            similarity_values.append(similarity)
+            
+            entry = {
+                'post_url': post_url,
+                'caption': caption,
+                'viewer': viewer,
+                'comment': comment,
+                'like': like,
+                'similarity': similarity,
+                'status_similarity': 'Sesuai' if similarity != 0.0 else 'Tidak Sesuai',
+            }
+            account_data_entries.append(entry)
+
+            total_similarity += similarity
+            total_entries += 1
+
+        account_info['account_data'] = account_data_entries
+        account_data.append(account_info)
+
+    average_similarity = total_similarity / total_entries if total_entries > 0 else 0
+
+    df_data = []
+    for account_info in account_data:
+        for entry in account_info['account_data']:
+            df_data.append({
+                'Account URL': account_info['account_url'],
+                'Social Media': account_info['social_media'],
+                'UE1': account_info['ue1'],
+                'Posts': account_info['posts'],
+                'Followers': account_info['followers'],
+                'Post URL': entry['post_url'],
+                'Caption': entry['caption'],
+                'Viewer': entry['viewer'],
+                'Comment': entry['comment'],
+                'Like': entry['like'],
+                'Similarity': entry['similarity'],
+                'Status': entry['status_similarity'],
+            })
+
+    excel_filename = f'instagram_data_{ue1}.xlsx'
+
+    df = pd.DataFrame(df_data)
+
+    excel_file = pd.ExcelWriter(excel_filename, engine='xlsxwriter')
+    df.to_excel(excel_file, sheet_name='Sheet1', index=False)
+    excel_file.save()
+
+    with open(excel_filename, 'rb') as excel:
+        response = HttpResponse(excel.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename={excel_filename}'
+        return response
 
 def test(request):
     return render(request, 'test.html')
@@ -270,7 +322,6 @@ def fetch_ig_data_db(request, ue1):
     }
 
     return render(request, 'instagram/instagram_detail_db.html', context)
-
 
 """
 LINKEDIN with OAuth2

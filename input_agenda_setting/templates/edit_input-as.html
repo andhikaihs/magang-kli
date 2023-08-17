@@ -52,7 +52,7 @@
         <!-- Form Input Agenda Setting -->
         <div class="col-md-10" style="background-color: #C7EEFF; height: 500px; padding-top: 10px; padding-bottom: 10px; border-radius: 12px;">
           <div style="padding: 20px 63px 0px 63px;">
-            <form method="POST" data-url="{% url 'input-as' %}">
+            <form method="POST">
               {% csrf_token %}
               <div class="pb-3">
                 <label for="agenda_date_time" class="form-label">Pilih Durasi Agenda Setting: </label>

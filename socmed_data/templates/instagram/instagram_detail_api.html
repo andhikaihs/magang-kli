@@ -19,14 +19,14 @@
     <script src="path_to_tableexport_js/tableexport.min.js"></script>
   </head>
   <body>
-    <!-- Navbar -->
+  <!-- Navbar -->
   <section>
     <nav class="navbar navbar-expand-md navbar-light shadow-sm">
       <div class="container-fluid" style="padding-left: 49px;">
         <div class="row justify-content-center align-items-center">
           <div class="col col-2">
             <a class="navbar-brand" href="{% url 'dashboard' %}">
-              <img src="{% static 'img/Logo_kementerian_keuangan_republik_indonesia 1.png' %}" alt="" width="55" height="51" class="d-inline-block align-text-top">
+              <img src="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png" alt="" width="55" height="51" class="d-inline-block align-text-top">
             </a>
           </div>
           <div class="col col-10" style="font-size: 20px; font-weight: 700; padding-left: 34px;">
@@ -60,7 +60,7 @@
                 {% endif %}
                 <!-- {% if user.roles != 'petugas_input_agenda_setting' %}
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'similarity-checker' %}">Similarity Checker</a>
+                    <a class="nav-link" href="{% url 'dashboard_similarity_checker' %}">Similarity Checker</a>
                   </li>
                 {% endif %} -->
                 <li class="nav-item" style="padding-right: 59px;">
@@ -76,19 +76,17 @@
 
   <!-- MAIN -->
   <section>
-    <div class="container" style="height: 648px;">
+    <div class="container">
       <div class="row d-flex justify-content-center" style="padding-top: 50px;">
-
           <!-- Statistic User -->
-            <!-- Statistic User -->
-            <h1 class="text-center" style="font-size: 20px; font-weight: 700; padding-bottom: 20px;">Instagram Post Information</h1>
+          <h1 class="text-center" style="font-size: 20px; font-weight: 700; padding-bottom: 20px;">Instagram Post Information</h1>
 
-            <div class="col-md-2">
-                <p style="font-size: 14px; font-weight: 700;">Unit Eselon 1<br>Start Date - End Date<br>Average Similarity</p>
-            </div>
-            <div class="col-md-10">
-                <p style="font-size: 14px; font-weight: 700;">: {{ ue1 }}<br>: {{ agenda_start }} - {{ agenda_end }}<br>: {{ average_similarity }}%</p>
-            </div>
+          <div class="col-md-2">
+              <p style="font-size: 14px; font-weight: 700;">Unit Eselon 1<br>Start Date - End Date<br>Average Similarity</p>
+          </div>
+          <div class="col-md-10">
+              <p style="font-size: 14px; font-weight: 700;">: {{ ue1 }}<br>: {{ agenda_start }} - {{ agenda_end }}<br>: {{ average_similarity }}%</p>
+          </div>
         </div>
 
         <!-- Table User -->
@@ -110,103 +108,50 @@
                     </tr>
                 </thead>
                 <tbody>
-                  {% for account_url, account_info in account_data.items %}
-                  {% for post_data in account_info.account_data %}
+                  {% for account_info in account_data %}
+                  {% for entry in account_info.account_data %}
                       <tr>
                           {% if forloop.counter == 1 %}
-                              <td rowspan="{{ account_info.account_data|length }}">{{ account_url }}</td>
-                              <td rowspan="{{ account_info.account_data|length }}">{{ account_info.followers }}</td>
-                              <td rowspan="{{ account_info.account_data|length }}">{{ account_info.account_data|length }}</td>
+                            <td rowspan="{{ account_info.account_data|length }}">{{ account_info.account_url }}</td>
+                            <td rowspan="{{ account_info.account_data|length }}">{{ account_info.followers }}</td>
+                            <td rowspan="{{ account_info.account_data|length }}">{{ account_info.posts }}</td>
                           {% endif %}
-                          <td>{{ post_data.post_urls }}</td>
-                          <td>{{ post_data.likes }}</td>
-                          <td>{{ post_data.comments }}</td>
-                          <td>{{ post_data.viewers }}</td>
+                          <td>{{ entry.post_url }}</td>
+                          <td>{{ entry.like }}</td>
+                          <td>{{ entry.comment }}</td>
+                          <td>{{ entry.viewer }}</td>
+                          <td>{{ entry.caption }}</td>
+                          <td>{{ entry.similarity }}%</td>
+                          <td>{{ entry.status_similarity }}</td>
                           <td>
-                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
-                            Caption
-                        </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="modal{{ forloop.parentloop.counter }}_{{ forloop.counter }}" tabindex="-1"
-                        aria-labelledby="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="modalLabel{{ forloop.parentloop.counter }}_{{ forloop.counter }}">Captions</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <p>{{ post_data.captions }}</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </td>
-                  <td>{{ post_data.similarity }}%</td>
-                  <td>
-                      {% if post_data.similarity == 0.0 %}
-                      Tidak Sesuai
-                      {% else %}
-                      Sesuai
-                      {% endif %}
-                  </td>
-                  <td>
-                    <a class="btn btn-warning" href="{% url 'similarity-checker' %}" role="button" onclick="changeButtonColor(this)">Verifikasi</a>
-                  </td>
-                    </tr>
-                    {% endfor %}
-                    {% endfor %}
+                            <a class="btn btn-warning" href="{% url 'similarity-checker' %}" role="button" onclick="changeButtonColor(this)">Verifikasi</a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                  {% endfor %}
                 </tbody>
             </table>
         </div>
+        <form method="post" action="{% url 'download_excel'  ue1 %}" class="col-md-12 d-flex justify-content-center" style="padding-top: 80px;">
+          {% csrf_token %}
+          <input id="downloadExcelButton" class="btn-option" style="width: 287px; height: 48px; background: #EFB829; color: #0D5CAB; border-style: none;" type="submit" value="Download Data">
+        </form>
     </div>
-    </div>
-    <div class="col-md-12" style="padding-top: 20px;">
-      <button id="downloadExcelButton" class="btn-option" role="button">Download Excel</button>
-  </div>     
   </section>
 
   <script>
     function changeButtonColor(button) {
-      button.classList.remove('btn-warning'); // Hapus kelas btn-warning
-      button.classList.add('btn-success');   // Tambahkan kelas btn-success
+        button.classList.add('verified-button');
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const downloadButton = document.getElementById("downloadExcelButton");
-        const table = document.querySelector("table"); // Select your table here
-
-        downloadButton.addEventListener("click", function () {
-            const tableExport = new TableExport(table, {
-                exportButtons: false, // Disable other export buttons
-            });
-            
-            const exportData = tableExport.getExportData().tablexls;
-            const exportBlob = new Blob([exportData], { type: "application/vnd.ms-excel" });
-
-            // Create a download link
-            const downloadLink = document.createElement("a");
-            downloadLink.href = URL.createObjectURL(exportBlob);
-            downloadLink.download = "data_instagram.xlsx"; // Change the filename if needed
-
-            // Simulate a click to trigger the download
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        });
-    });
   </script>
-  <!-- footer -->
+
+  <!-- Footer -->
   <section>
     <div class="container-fluid" style="height: 338px; background-color: #0D5CAB;">
       <div class="row d-flex justify-content-center px-5">
         <div class="col-md-12" style="height: 64px;"></div>
         <div class="col-md-2">
-          <img src="{% static 'img/Logo_kementerian_keuangan_republik_indonesia 1.png' %}" alt="" width="144" height="134">
+          <img src="../static/img/Logo_kementerian_keuangan_republik_indonesia 1.png" alt="" width="144" height="134">
         </div>
         <div class="col-md-6">
           <h3 class="text-white" style="font-size: 24px; font-weight: 700;">KEMENTERIAN KEUANGAN</h3>
@@ -238,15 +183,6 @@
               </a>
             </div>
           </div>
-          <div class="col col-10" style="font-size: 20px; font-weight: 700; padding-left: 34px;">
-            MONITORING AGENDA SETTING
-          </div>  
-        </div>
-        
-        <div class="ms-auto">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
           <div class="d-flex flex-row-reverse pr-2">
             <div class="p-3">
@@ -285,6 +221,6 @@
 
       </div>
     </div>
-    </section>
+  </section>
   </body>
 </html>

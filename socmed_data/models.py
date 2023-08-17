@@ -37,6 +37,8 @@ class SocialMediaData(models.Model):
     comments = models.TextField(null=True, blank=True)
     likes = models.TextField(null=True, blank=True)
     similarity = models.TextField(null=True, blank=True)
+    status_similarity = models.TextField(null=True, blank=True)
+    verify = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
